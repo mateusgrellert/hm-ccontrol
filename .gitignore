@@ -1,0 +1,9 @@
+nbproject/*
+bin/*yuv
+build/Intermediates/*
+**/objects
+bin/*.bin
+bin/Debug/*
+bin/Release/*
+.svn/*
+bin_*
