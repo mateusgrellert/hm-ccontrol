@@ -88,14 +88,14 @@ void TComComplexityController::endFrameTimer(){
 void TComComplexityController::printControlStats(double estimatedTime){
     openPidFile();
     pidFile << currPoc;
-    pidFile << "\t" << controlActive << "\t" <<  SP << "\t" << PV << "\t" << gopPV << "\t" << avgPV << "\t" << controlOutput;
+    pidFile << "\t" << controlActive << "\t" <<  SP << "\t" << PV << "\t" << gopPV/gopSize << "\t" << avgPV << "\t" << controlOutput;
     pidFile << "\t" << estimatedTime << "\t\t\t" << kp*error << "\t" << ki*accumError << "\t" <<  kd*(error - prevError) << endl;
 }
 
 
 bool TComComplexityController::activateControl(int poc){
     currPoc = poc;
-    controlActive = (poc == (NUM_RD_FRAMES + trainingPeriod));
+    controlActive = (poc >= (NUM_RD_FRAMES + trainingPeriod));
     updateSP();
     return controlActive;
 }

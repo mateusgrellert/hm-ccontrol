@@ -1139,8 +1139,8 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
          
 #if EN_COMPLEXITY_MANAGING
     if(pcSlice->isIntra()){
-        TComComplexityController::init(m_iGopSize);
-        TComComplexityBudgeter::init(pcPic->getPicYuvOrg()->getWidth(COMPONENT_Y), pcPic->getPicYuvOrg()->getHeight(COMPONENT_Y), m_iGopSize);
+        TComComplexityController::init(m_pcCfg->getGOPSize());
+        TComComplexityBudgeter::init(pcPic->getPicYuvOrg()->getWidth(COMPONENT_Y), pcPic->getPicYuvOrg()->getHeight(COMPONENT_Y), m_pcCfg->getGOPSize());
     
     }
     else{
