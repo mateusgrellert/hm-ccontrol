@@ -1,0 +1,8 @@
+#
+#    FORMAT:  TEST_NAME PATH_TO_ REF TEST PARAMS (SEPARATED BY SPACES)
+#
+
+CUDepth=1	../bin/TAppEncoderStatic_Ref	MaxPartitionDepth=1
+SR=0	../bin/TAppEncoderStatic_Ref	SearchRange=0
+TestRect=0	../bin/TAppEncoderStatic_Ref	TestRect=0
+

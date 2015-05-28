@@ -1,0 +1,53 @@
+import Configuration
+import re
+import os
+from joblib import Parallel, delayed  
+import multiprocessing
+
+def treatConfig(sequence, gopStructure, qp, mode, testName = 'test'):
+	gopStructure = gopStructure.split('.cfg')[0]
+	sequence = sequence.split('.cfg')[0]
+	cfgPath = Configuration.cfgPath.rstrip('/')
+	hmOutputPath = Configuration.hmOutputPath.rstrip('/')
+	sequencePath = Configuration.sequencePath.rstrip('/')
+
+	gopPath = cfgPath + '/' + gopStructure + '.cfg'
+	seqPath = sequencePath + '/' + sequence + '.cfg'
+	
+	if mode == 'ref':
+		resultsPath = hmOutputPath+'/hmOut_%s_%s_QP%s_REF.txt' % (sequence, gopStructure, qp)
+	else:
+		resultsPath = hmOutputPath+'/hmOut_%s_%s_QP%s_%s.txt' % (sequence, gopStructure, qp, testName)
+
+	return [gopPath, seqPath, resultsPath]
+
+def parseOutput(resultsPath):
+	hmResults = open(resultsPath, 'r').read()
+	rd_pattern = '\s+\d+\s+a\s+(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+).*'
+	time_pattern = 'Total\s+Time\:\s+(\d+\.\d+)\s+.*'
+	p = re.compile(rd_pattern + time_pattern, re.S)
+	result = p.findall(hmResults)[0]
+	return [[float(x) for x in result[:-1]], float(result[-1])]
+
+def makeBDRateFile(gopStructure):
+	bdRateFile = open('BDResults_' + gopStructure + '.csv', 'w')
+	print >> bdRateFile, 'Sequence\t' + '\t'.join(['BD-BR Y\tTime Savings']*Configuration.N_TESTS)
+	return bdRateFile
+
+def makeRDValuesFile(gopStructure):
+	rdRateFile = open('RDResults_' + gopStructure + '.csv', 'w')
+	print >> rdRateFile, 'Sequence\tQP\t' + '\t'.join(['Bitrate\tPSNR-Y\tPSNR-U\tPSNR-V\tEnc. Time']*(Configuration.N_TESTS+1))
+	return rdRateFile
+
+
+
+def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, mode, testName='test'):
+	[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, mode, testName)
+	if os.path.isfile(resultsPath):
+		lines = open(resultsPath, 'r').readlines()
+		if any('Total Time' in x for x in lines):
+			return
+	cmdLine = '%s -c %s -c %s -q %s %s > %s 2> %s_warn.txt' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath, resultsPath)
+	if numFrames:
+		cmdLine += ' -f ' + str(numFrames)
+	os.system(cmdLine)

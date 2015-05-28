@@ -46,7 +46,9 @@ def makeRDValuesFile(gopStructure):
 def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, mode, testIdx=0):
 	[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, mode, testIdx)
 	if os.path.isfile(resultsPath):
-		return
+		lines = open(resultsPath, 'r').readlines()
+		if any('Total Time' in x for x in lines):
+			return
 	cmdLine = '%s -c %s -c %s -q %s %s > %s 2> %s_warn.txt' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath, resultsPath)
 	if numFrames:
 		cmdLine += ' -f ' + str(numFrames)

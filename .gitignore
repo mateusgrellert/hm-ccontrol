@@ -7,4 +7,4 @@ bin/Debug/*
 bin/Release/*
 .svn/*
 bin_*
-BDRateAutomatedScript/hmOutput/*
+**/hmOutput
