@@ -3110,7 +3110,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 
   TComMv       cMvPredBi[2][33];
   Int          aaiMvpIdxBi[2][33];
-
+    int numRefs;
   Int          aaiMvpIdx[2][33];
   Int          aaiMvpNum[2][33];
 
@@ -3180,7 +3180,11 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
     {
       RefPicList  eRefPicList = ( iRefList ? REF_PIC_LIST_1 : REF_PIC_LIST_0 );
 
-      for ( Int iRefIdxTemp = 0; iRefIdxTemp < pcCU->getSlice()->getNumRefIdx(eRefPicList); iRefIdxTemp++ )
+        //        for ( Int iRefIdxTemp = 0; iRefIdxTemp < pcCU->getSlice()->getNumRefIdx(eRefPicList) and iRefIdxTemp < (m_pcEncCfg->getRefFrames()/iNumPredDir); iRefIdxTemp++ )
+         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),m_pcEncCfg->getRefFrames()/iNumPredDir);
+        if(numRefs == 0 and eRefPicList == REF_PIC_LIST_0)
+            numRefs = 1;
+       for ( Int iRefIdxTemp = 0; iRefIdxTemp < numRefs ; iRefIdxTemp++ )
       {
           
 #if EN_COMPLEXITY_MANAGING
@@ -3189,10 +3193,10 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 #endif
           
         uiBitsTemp = uiMbBits[iRefList];
-        if ( pcCU->getSlice()->getNumRefIdx(eRefPicList) > 1 )
+        if ( numRefs > 1 )
         {
           uiBitsTemp += iRefIdxTemp+1;
-          if ( iRefIdxTemp == pcCU->getSlice()->getNumRefIdx(eRefPicList)-1 ) uiBitsTemp--;
+          if ( iRefIdxTemp == numRefs-1 ) uiBitsTemp--;
         }
         xEstimateMvPredAMVP( pcCU, pcOrgYuv, iPartIdx, eRefPicList, iRefIdxTemp, cMvPred[iRefList][iRefIdxTemp], false, &biPDistTemp);
         aaiMvpIdx[iRefList][iRefIdxTemp] = pcCU->getMVPIdx(eRefPicList, uiPartAddr);
@@ -3265,7 +3269,8 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
     }
 
     //  Bi-directional prediction
-    if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false) )
+     numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1),m_pcEncCfg->getRefFrames()/iNumPredDir);
+    if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false && numRefs != 0) )
     {
 
       cMvBi[0] = cMv[0];            cMvBi[1] = cMv[1];
@@ -3292,11 +3297,12 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 
         uiMotBits[0] = uiBits[0] - uiMbBits[0];
         uiMotBits[1] = uiMbBits[1];
+        numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1),m_pcEncCfg->getRefFrames()/iNumPredDir);
 
-        if ( pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1) > 1 )
+        if ( numRefs > 1 )
         {
           uiMotBits[1] += bestBiPRefIdxL1+1;
-          if ( bestBiPRefIdxL1 == pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1)-1 ) uiMotBits[1]--;
+          if ( bestBiPRefIdxL1 == numRefs-1 ) uiMotBits[1]--;
         }
 
         uiMotBits[1] += m_auiMVPIdxCost[aaiMvpIdxBi[1][bestBiPRefIdxL1]][AMVP_MAX_NUM_CANDS];
@@ -3359,7 +3365,9 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
         Bool bChanged = false;
 
         iRefStart = 0;
-        iRefEnd   = pcCU->getSlice()->getNumRefIdx(eRefPicList)-1;
+           numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),m_pcEncCfg->getRefFrames()/iNumPredDir);
+
+        iRefEnd   = numRefs-1;
 #if EN_COMPLEXITY_MANAGING
         if (iRefEnd+1 < TComComplexityBudgeter::maxNumRefPics) TComComplexityBudgeter::maxNumRefPics = iRefEnd+1;
         for ( Int iRefIdxTemp = iRefStart; iRefIdxTemp < TComComplexityBudgeter::maxNumRefPics; iRefIdxTemp++ )
@@ -3368,10 +3376,10 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 #endif
         {
           uiBitsTemp = uiMbBits[2] + uiMotBits[1-iRefList];
-          if ( pcCU->getSlice()->getNumRefIdx(eRefPicList) > 1 )
+          if ( numRefs > 1 )
           {
             uiBitsTemp += iRefIdxTemp+1;
-            if ( iRefIdxTemp == pcCU->getSlice()->getNumRefIdx(eRefPicList)-1 ) uiBitsTemp--;
+            if ( iRefIdxTemp == numRefs-1 ) uiBitsTemp--;
           }
           uiBitsTemp += m_auiMVPIdxCost[aaiMvpIdxBi[iRefList][iRefIdxTemp]][AMVP_MAX_NUM_CANDS];
           // call ME
@@ -3915,9 +3923,9 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
 #if EN_COMPLEXITY_MANAGING
   if(TComComplexityBudgeter::enFME){
 #endif
-  if(m_pcEncCfg->getFME() >= 1){
+  if(m_pcEncCfg->getFME() == 1 or m_pcEncCfg->getFME() == 3){
     rcMv += (cMvHalf <<= 1);
-    if(m_pcEncCfg->getFME() == 2){
+    if(m_pcEncCfg->getFME() >= 2){
         rcMv +=  cMvQter;
     }
   }
@@ -4452,25 +4460,29 @@ Void TEncSearch::xPatternSearchFracDIF(
 #if EN_COMPLEXITY_MANAGING
   if(TComComplexityBudgeter::enFME){
 #endif
-      if(m_pcEncCfg->getFME() >= 1){
+      TComMv baseRefMv(0, 0);
+
+      if(m_pcEncCfg->getFME() == 1 or m_pcEncCfg->getFME() == 3){
             //  Half-pel refinement
         xExtDIFUpSamplingH ( &cPatternRoi, biPred );
 
         rcMvHalf = *pcMvInt;   rcMvHalf <<= 1;    // for mv-cost
-        TComMv baseRefMv(0, 0);
         ruiCost = xPatternRefinement( pcPatternKey, baseRefMv, 2, rcMvHalf, !bIsLosslessCoded );
-
-        if(m_pcEncCfg->getFME() == 2){
-          m_pcRdCost->setCostScale( 0 );
-          xExtDIFUpSamplingQ ( &cPatternRoi, rcMvHalf, biPred );
-          baseRefMv = rcMvHalf;
-          baseRefMv <<= 1;
-
-          rcMvQter = *pcMvInt;   rcMvQter <<= 1;    // for mv-cost
-          rcMvQter += rcMvHalf;  rcMvQter <<= 1;
-          ruiCost = xPatternRefinement( pcPatternKey, baseRefMv, 1, rcMvQter, !bIsLosslessCoded );
-        }
       }
+      else
+          rcMvHalf = baseRefMv;
+      
+      if(m_pcEncCfg->getFME() == 2 or m_pcEncCfg->getFME() == 3){
+         m_pcRdCost->setCostScale( 0 );
+         xExtDIFUpSamplingQ ( &cPatternRoi, rcMvHalf, biPred );
+         baseRefMv = rcMvHalf;
+         baseRefMv <<= 1;
+          
+         rcMvQter = *pcMvInt;   rcMvQter <<= 1;    // for mv-cost
+         rcMvQter += rcMvHalf;  rcMvQter <<= 1;
+         ruiCost = xPatternRefinement( pcPatternKey, baseRefMv, 1, rcMvQter, !bIsLosslessCoded );
+        }
+      
   
 #if EN_COMPLEXITY_MANAGING
   }

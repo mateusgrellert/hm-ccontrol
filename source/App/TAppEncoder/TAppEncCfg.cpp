@@ -759,7 +759,7 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
 #if ALLOW_RECOVERY_POINT_AS_RAP
   ("DecodingRefreshType,-dr",                         m_iDecodingRefreshType,                               0, "Intra refresh type (0:none 1:CRA 2:IDR 3:RecPointSEI)")
 #else
-  ("DecodingRefreshType,-dr",                         m_iDecodingRefreshType,                               0, "Intra refresh type (0:none 1:CRA 2:IDR)")
+  ("DecodingR`efreshType,-dr",                         m_iDecodingRefreshType,                               0, "Intra refresh type (0:none 1:CRA 2:IDR)")
 #endif
   ("GOPSize,g",                                       m_iGOPSize,                                           1, "GOP size of temporal structure")
 
@@ -769,7 +769,10 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
   ("BipredSearchRange",                               m_bipredSearchRange,                                  4, "Motion search range for bipred refinement")
   ("HadamardME",                                      m_bUseHADME,                                       true, "Hadamard ME for fractional-pel")
   ("ASR",                                             m_bUseASR,                                        false, "Adaptive motion search range")
-  ("FME",                                             m_iFME,                                        2, "FME cfg: 0 - off 1- Half Only 2 - Half+Quarter")
+    // NEW PARAMETERS
+    ("TestRect",                                             m_bTestRect,                                        true, "Rectanguler SMP enabler")
+    ("RefFrames",                                             m_iRefFrames,                                        4, "NUmber of Reference Frames")
+    ("FME",                                             m_iFME,                                        3, "FME cfg: 0 - off 1- Half Only 2 - Quarter Only 3 - Half+Quarter")
 #if EN_COMPLEXITY_MANAGING
   ("BudgetAlgorithm,-balg",      budgetAlg,   0u, "Budgeting Algorithm: 0-Uniform,1-Uniform 2-Bottomup,3-ICIP 4-Set All To Fix PSET")
   ("PSet",       pset_idx,                    0u, "PSet selector for budget algorithm 4")
@@ -2309,11 +2312,13 @@ Void TAppEncCfg::xPrintParameter()
   printf("Decoding refresh type             : %d\n", m_iDecodingRefreshType );
   printf("QP                                : %5.2f\n", m_fQP );
   printf("Max dQP signaling depth           : %d\n", m_iMaxCuDQPDepth);
-  printf("FME                               : %d\n", m_iFME);
+    printf("FME                               : %d\n", m_iFME);
+    printf("Test Rectangular SMPS             : %d\n", m_bTestRect);
+    printf("Number Reference Frames           : %d\n", m_iRefFrames);
 #if EN_COMPLEXITY_MANAGING
   printf("Budgeting Algorithm                : %d\n", TComComplexityBudgeter::budgetAlgorithm);
   
-  printf("PID KP                             : %.3f\n", TComComplexityController::kp);
+  printf("\nPID KP                             : %.3f\n", TComComplexityController::kp);
   printf("PID K                              : %.3f\n", TComComplexityController::ki);
   printf("PID KD                             : %.3f\n", TComComplexityController::kd);
   printf("SP                                 : %.3f\n\n", TComComplexityController::SP);

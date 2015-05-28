@@ -194,7 +194,9 @@ protected:
   Bool      m_enableIntraReferenceSmoothing;                  ///< flag for enabling(default)/disabling intra reference smoothing/filtering
 
   // coding tools (encoder-only parameters)
-  Int       m_iFME;
+    Int       m_iFME;
+    bool       m_bTestRect;
+    Int       m_iRefFrames;
   Bool      m_bUseASR;                                        ///< flag for using adaptive motion search range
   Bool      m_bUseHADME;                                      ///< flag for using HAD in sub-pel ME
   Bool      m_useRDOQ;                                       ///< flag for using RD optimized quantization

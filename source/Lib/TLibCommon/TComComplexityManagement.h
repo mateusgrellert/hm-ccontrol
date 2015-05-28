@@ -9,7 +9,7 @@
 #define	TCOMCOMPLEXITYMANAGEMENT_H
 
 
-#define EN_COMPLEXITY_MANAGING 1
+#define EN_COMPLEXITY_MANAGING 0
 #define NUM_RD_FRAMES 5
 
 #define NUM_PARAMS 7 // cu depth, tu depth, AMP, SE, HAD ME, num ref frames, FME

@@ -165,7 +165,9 @@ Void TAppEncTop::xInitLibCfg()
   m_cTEncTop.setDeltaQpRD                                         ( m_uiDeltaQpRD  );
   m_cTEncTop.setUseASR                                            ( m_bUseASR      );
   m_cTEncTop.setUseHADME                                          ( m_bUseHADME    );
-  m_cTEncTop.setFME                                          ( m_iFME    );
+    m_cTEncTop.setFME                                          ( m_iFME    );
+    m_cTEncTop.setTestRect                                          ( m_bTestRect    );
+    m_cTEncTop.setRefFrames                                          ( m_iRefFrames    );
   m_cTEncTop.setdQPs                                              ( m_aidQP        );
   m_cTEncTop.setUseRDOQ                                           ( m_useRDOQ     );
   m_cTEncTop.setUseRDOQTS                                         ( m_useRDOQTS   );
