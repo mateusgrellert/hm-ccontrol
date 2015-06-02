@@ -36,7 +36,7 @@ for gopStructure in Configuration.gopStructureList:
 				for target in PSetBuilder.TARGET_POINTS:
 					testBDResults = []
 					testTimeResults = []
-					optParams = PSetBuilder.getNextCfg(optParams, BDRateCostList, target, timeSavings, bdrateIncY)
+					optParams = PSetBuilder.getNextCfg(optParams, BDRateCostList, target, timeSavings)
 					testName = PSetBuilder.getCfgName(optParams)
 					pathToBin = Configuration.pathToRefBin
 

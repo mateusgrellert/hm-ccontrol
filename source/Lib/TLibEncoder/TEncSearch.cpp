@@ -3181,7 +3181,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
       RefPicList  eRefPicList = ( iRefList ? REF_PIC_LIST_1 : REF_PIC_LIST_0 );
 
         //        for ( Int iRefIdxTemp = 0; iRefIdxTemp < pcCU->getSlice()->getNumRefIdx(eRefPicList) and iRefIdxTemp < (m_pcEncCfg->getRefFrames()/iNumPredDir); iRefIdxTemp++ )
-         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),m_pcEncCfg->getRefFrames()/iNumPredDir);
+         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),pcCU->getSlice()->getRPS()->getNumberOfPictures()-m_pcEncCfg->getRefFrames());
         if(numRefs == 0 and eRefPicList == REF_PIC_LIST_0)
             numRefs = 1;
        for ( Int iRefIdxTemp = 0; iRefIdxTemp < numRefs ; iRefIdxTemp++ )
@@ -3269,7 +3269,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
     }
 
     //  Bi-directional prediction
-     numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1),m_pcEncCfg->getRefFrames()/iNumPredDir);
+        numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1),pcCU->getSlice()->getRPS()->getNumberOfPictures()-m_pcEncCfg->getRefFrames());
     if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false && numRefs != 0) )
     {
 
@@ -3297,7 +3297,6 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 
         uiMotBits[0] = uiBits[0] - uiMbBits[0];
         uiMotBits[1] = uiMbBits[1];
-        numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1),m_pcEncCfg->getRefFrames()/iNumPredDir);
 
         if ( numRefs > 1 )
         {
@@ -3365,7 +3364,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
         Bool bChanged = false;
 
         iRefStart = 0;
-           numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),m_pcEncCfg->getRefFrames()/iNumPredDir);
+          numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),pcCU->getSlice()->getRPS()->getNumberOfPictures()-m_pcEncCfg->getRefFrames());
 
         iRefEnd   = numRefs-1;
 #if EN_COMPLEXITY_MANAGING

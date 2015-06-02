@@ -22,7 +22,11 @@ for gopStructure in Configuration.gopStructureList:
 
 		for qp in Configuration.qpList:
 			[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, 'ref')
-			[bd, time] = parseOutput(resultsPath)
+			parsed = parseOutput(resultsPath)
+			if parsed:
+				[bd, time] = parseOutput(resultsPath)
+			else:
+				[bd, time] = ['N/A', 'N/A']
 			rdFileLine[qp] = '\t'.join([str(x) for x in [sequence]+[qp]+bd+[time]]) + '\t'
 
 			refBDResults.append(bd)
@@ -40,14 +44,16 @@ for gopStructure in Configuration.gopStructureList:
 
 			for qp in Configuration.qpList:
 				[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, 'test', testIdx)
-				[bd, time] = parseOutput(resultsPath)
+				parsed = parseOutput(resultsPath)
+				if parsed:
+					[bd, time] = parseOutput(resultsPath)
+				else:
+					[bd, time] = ['N/A', 'N/A']
 				rdFileLine[qp] += '\t'.join([str(x) for x in bd+[time]]) + '\t'
 				testBDResults.append(bd)
 				testTimeResults.append(time)
 
-			timeSavings = 1.0-(sum(testTimeResults)/sum(refTimeResults))
-			bdRates = '\t'.join(["%.2f" % (bdrate(refBDResults, testBDResults, i)) for i in range(1,2)])
-			print >> bdRateFile, '\t%s\t%.3f' % (bdRates, timeSavings),
+			calcAndPrintBDRate(refTimeResults,refBDResults,testTimeResults,testBDResults, bdRateFile)
 		for qp in Configuration.qpList:
 			print >> rdValuesFile, rdFileLine[qp]
 
