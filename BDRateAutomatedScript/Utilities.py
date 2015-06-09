@@ -52,7 +52,7 @@ def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 
 	[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, mode, testIdx)
 	if os.path.isfile(resultsPath):
 		return
-	cmdLine = '%s -c %s -c %s -q %s %s > %s 2> %s_warn.txt' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath, resultsPath)
+	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
 	if numFrames:
 		cmdLine += ' -f ' + str(numFrames)
 	os.system(cmdLine)

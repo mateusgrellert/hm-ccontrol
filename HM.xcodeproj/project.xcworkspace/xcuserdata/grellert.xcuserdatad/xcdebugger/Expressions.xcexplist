@@ -9,7 +9,7 @@
                value = "pcCU-&gt;getSlice()-&gt;getNumRefIdx(eRefPicList)">
             </PersistentString>
             <PersistentString
-               value = "m_pcEncCfg-&gt;getRefFrames()/iNumPredDir">
+               value = "m_pcEncCfg-&gt;getUseFastEnc()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

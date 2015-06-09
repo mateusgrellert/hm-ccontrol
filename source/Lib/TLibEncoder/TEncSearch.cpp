@@ -3181,7 +3181,8 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
       RefPicList  eRefPicList = ( iRefList ? REF_PIC_LIST_1 : REF_PIC_LIST_0 );
 
         //        for ( Int iRefIdxTemp = 0; iRefIdxTemp < pcCU->getSlice()->getNumRefIdx(eRefPicList) and iRefIdxTemp < (m_pcEncCfg->getRefFrames()/iNumPredDir); iRefIdxTemp++ )
-         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),pcCU->getSlice()->getRPS()->getNumberOfPictures()-m_pcEncCfg->getRefFrames());
+         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
+        //numRefs =pcCU->getSlice()->getNumRefIdx(eRefPicList);
         if(numRefs == 0 and eRefPicList == REF_PIC_LIST_0)
             numRefs = 1;
        for ( Int iRefIdxTemp = 0; iRefIdxTemp < numRefs ; iRefIdxTemp++ )
@@ -3269,8 +3270,9 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
     }
 
     //  Bi-directional prediction
-        numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1),pcCU->getSlice()->getRPS()->getNumberOfPictures()-m_pcEncCfg->getRefFrames());
-    if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false && numRefs != 0) )
+        numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1), m_pcEncCfg->getRefFrames());
+
+    if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false)  )
     {
 
       cMvBi[0] = cMv[0];            cMvBi[1] = cMv[1];
@@ -3316,7 +3318,6 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
         uiMotBits[1] = uiBits[1] - uiMbBits[1];
         uiBits[2] = uiMbBits[2] + uiMotBits[0] + uiMotBits[1];
       }
-
       // 4-times iteration (default)
       Int iNumIter = 4;
 
@@ -3364,21 +3365,21 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
         Bool bChanged = false;
 
         iRefStart = 0;
-          numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList),pcCU->getSlice()->getRPS()->getNumberOfPictures()-m_pcEncCfg->getRefFrames());
+          numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
 
-        iRefEnd   = numRefs-1;
+        iRefEnd   = numRefs;
 #if EN_COMPLEXITY_MANAGING
         if (iRefEnd+1 < TComComplexityBudgeter::maxNumRefPics) TComComplexityBudgeter::maxNumRefPics = iRefEnd+1;
         for ( Int iRefIdxTemp = iRefStart; iRefIdxTemp < TComComplexityBudgeter::maxNumRefPics; iRefIdxTemp++ )
 #else
-        for ( Int iRefIdxTemp = iRefStart; iRefIdxTemp <= iRefEnd; iRefIdxTemp++ )
+        for ( Int iRefIdxTemp = iRefStart; iRefIdxTemp < iRefEnd; iRefIdxTemp++ )
 #endif
         {
           uiBitsTemp = uiMbBits[2] + uiMotBits[1-iRefList];
           if ( numRefs > 1 )
           {
             uiBitsTemp += iRefIdxTemp+1;
-            if ( iRefIdxTemp == numRefs-1 ) uiBitsTemp--;
+            if ( iRefIdxTemp == iRefEnd-1 ) uiBitsTemp--;
           }
           uiBitsTemp += m_auiMVPIdxCost[aaiMvpIdxBi[iRefList][iRefIdxTemp]][AMVP_MAX_NUM_CANDS];
           // call ME

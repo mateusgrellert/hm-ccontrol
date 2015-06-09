@@ -26,7 +26,7 @@ for gopStructure in Configuration.gopStructureList:
 			if parsed:
 				[bd, time] = parseOutput(resultsPath)
 			else:
-				[bd, time] = ['N/A', 'N/A']
+				[bd, time] = [['N/A'], 'N/A']
 			rdFileLine[qp] = '\t'.join([str(x) for x in [sequence]+[qp]+bd+[time]]) + '\t'
 
 			refBDResults.append(bd)
@@ -48,7 +48,7 @@ for gopStructure in Configuration.gopStructureList:
 				if parsed:
 					[bd, time] = parseOutput(resultsPath)
 				else:
-					[bd, time] = ['N/A', 'N/A']
+					[bd, time] = [['N/A'], 'N/A']
 				rdFileLine[qp] += '\t'.join([str(x) for x in bd+[time]]) + '\t'
 				testBDResults.append(bd)
 				testTimeResults.append(time)

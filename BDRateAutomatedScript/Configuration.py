@@ -5,7 +5,7 @@ def buildTestSet(path):
 	paramList = []
 	testNameList = []
 	for line in inputFile.readlines():
-		if '#' in line: continue
+		if '#' in line or len(line.split()) < 3 : continue
 
 		line = line.split()
 		name = line[0]
@@ -29,13 +29,12 @@ sequenceList = [['BQSquare', 64],['BlowingBubbles', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
 				['ChinaSpeed', 64],['BasketballDrillText', 64], \
 				['Johnny', 64],  ['FourPeople',64]]
-
-sequenceList = [['BQMall', 64]]
+#sequenceList = [['BQSquare', 64]]
 qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
 sequencePath = '/Users/grellert/hm-cfgs/cropped'
-hmOutputPath = './hmOutput'
+hmOutputPath = '/Users/grellert/Dropbox/Doutorado/hmOutput'
 
 pathToRefBin = '../bin/TAppEncoderStatic_Ref'
 optParamsRef = ''
