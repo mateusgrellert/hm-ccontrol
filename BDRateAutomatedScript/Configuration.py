@@ -33,8 +33,8 @@ sequenceList = [['BQSquare', 64],['BlowingBubbles', 64], \
 qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
-sequencePath = '/Users/grellert/hm-cfgs/cropped'
-hmOutputPath = '/Users/grellert/Dropbox/Doutorado/hmOutput'
+sequencePath = '/home/grellert/hm-cfgs/cropped'
+hmOutputPath = './hmoutput'
 
 pathToRefBin = '../bin/TAppEncoderStatic_Ref'
 optParamsRef = ''

@@ -60,20 +60,7 @@ def getCfgString(optParams):
 	return '_'.join([x.strip('--') for x in optParams.split()])
 
 
-#  PARAM: [BD-BR INC, TIME SAVINGS]
-BDRateCostList = {'SearchRange=32': [ 0.03 ,  1.34 ], 'QuadtreeTUMaxDepthInter=2': [ 0.33 ,  12.97 ], 'TestRect=0': [ 2.1 ,  36.25 ],\
-				  'QuadtreeTUMaxDepthInter=1': [ 1.53 ,  23.09 ], 'AMP=0': [ 0.97 ,  13.63 ], 'SearchRange=8': [ 0.3 ,  2.29 ], 'HadamardME=0': [ 1.06 ,  5.72 ], \
-				  'MaxPartitionDepth=3': [ 5.79 ,  24.31 ], 'FME=1': [ 4.38 ,  16.69 ], 'RefFrames=1': [ 8.99 ,  31.05 ], 'RefFrames=2': [ 7.42 ,  20.24 ], \
-				  'MaxPartitionDepth=2': [ 24.68 ,  56.71 ], 'FME=0': [ 15.9 ,  29.5 ], 'MaxPartitionDepth=1': [ 63.63 ,  78.04 ], 'SearchRange=0': [ 3.69 ,  3.82 ], 'FME=2': [ 16.18 ,  13.68 ]}
-#visited = {'SearchRange=32': False, 'QuadtreeTUMaxDepthInter=2': False, 'TestRect=0': False, 'QuadtreeTUMaxDepthInter=1': False, 'AMP=0': False, 'SearchRange=8': False, 'HadamardME=0': False, 'MaxPartitionDepth=3': False, 'FME=1': False, 'RefFrames=1': False, 'RefFrames=2': False, 'MaxPartitionDepth=2': False, 'FME=0': False, 'MaxPartitionDepth=1': False, 'SearchRange=0': False, 'FME=2': False}
+#  PARAM: [BD-BR INC, TIME SAVINGS, RDCCost]
+BDRateCostList = {'SearchRange=32' : [0.033,0.000,0.014],'BipredSearchRange=2' : [0.052,0.001,0.022],'QuadtreeTUMaxDepthInter=2' : [0.098,0.003,0.031],'TestRect=0' : [0.435,0.021,0.049],'BipredSearchRange=0' : [0.069,0.005,0.066],'SearchRange=8' : [0.056,0.004,0.066],'QuadtreeTUMaxDepthInter=1' : [0.161,0.013,0.081],'AMP=0' : [0.103,0.010,0.098],'RefFrames=3' : [0.157,0.019,0.119],'HadamardME=0' : [0.088,0.013,0.151],'RefFrames=2' : [0.309,0.048,0.155],'FME=1' : [0.243,0.039,0.160],'MaxPartitionDepth=3' : [0.228,0.057,0.248],'RefFrames=1' : [0.451,0.125,0.278],'FME=0' : [0.409,0.141,0.345],'SearchRange=0' : [0.090,0.038,0.419],'RDOQ=0' : [0.074,0.032,0.427],'MaxPartitionDepth=2' : [0.559,0.246,0.440],'FME=2' : [0.188,0.152,0.809],'MaxPartitionDepth=1' : [0.770,0.650,0.845]}
 
-while True:
-	target = float(raw_input('Target: '))
-	optParams = ''
-	currSavings = 0.0
-	currBDBRInc = 0.0
-	while currSavings < target:
-		optParams = getNextCfg(optParams, BDRateCostList, target, currBDBRInc)
-		print optParams
-		currSavings = float(raw_input('Savings: '))
-		currBDBRInc = float(raw_input('BDBR: '))
+#visited = {'SearchRange=32': False, 'QuadtreeTUMaxDepthInter=2': False, 'TestRect=0': False, 'QuadtreeTUMaxDepthInter=1': False, 'AMP=0': False, 'SearchRange=8': False, 'HadamardME=0': False, 'MaxPartitionDepth=3': False, 'FME=1': False, 'RefFrames=1': False, 'RefFrames=2': False, 'MaxPartitionDepth=2': False, 'FME=0': False, 'MaxPartitionDepth=1': False, 'SearchRange=0': False, 'FME=2': False}

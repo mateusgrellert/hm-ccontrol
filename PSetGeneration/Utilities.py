@@ -31,12 +31,12 @@ def parseOutput(resultsPath):
 
 def makeBDRateFile(gopStructure):
 	bdRateFile = open('BDResults_' + gopStructure + '.csv', 'w')
-	print >> bdRateFile, 'Sequence\t' + '\t'.join(['BD-BR Y\tTime Savings']*Configuration.N_TESTS)
+	print >> bdRateFile, 'Sequence\t' + '\t'.join(['BD-BR Y\tTime Savings']*len(PSetBuilder.TARGET_POINTS)))
 	return bdRateFile
 
 def makeRDValuesFile(gopStructure):
 	rdRateFile = open('RDResults_' + gopStructure + '.csv', 'w')
-	print >> rdRateFile, 'Sequence\tQP\t' + '\t'.join(['Bitrate\tPSNR-Y\tPSNR-U\tPSNR-V\tEnc. Time']*(Configuration.N_TESTS+1))
+	print >> rdRateFile, 'Sequence\tQP\t' + '\t'.join(['Bitrate\tPSNR-Y\tPSNR-U\tPSNR-V\tEnc. Time']*(len(PSetBuilder.TARGET_POINTS)))
 	return rdRateFile
 
 

@@ -9,7 +9,7 @@ def treatConfig(sequence, gopStructure, qp, mode, testIdx = 0):
 	gopStructure = gopStructure.split('.cfg')[0]
 	sequence = sequence.split('.cfg')[0]
 	cfgPath = Configuration.cfgPath.rstrip('/')
-	hmOutputPath = Configuration.hmOutputPath.rstrip('/')
+	hmOutputPath = Configuration.hmOutputPath.rstrip('/').lower()
 	sequencePath = Configuration.sequencePath.rstrip('/')
 
 	gopPath = cfgPath + '/' + gopStructure + '.cfg'
@@ -23,7 +23,14 @@ def treatConfig(sequence, gopStructure, qp, mode, testIdx = 0):
 	return [gopPath, seqPath, resultsPath]
 
 def parseOutput(resultsPath):
-	hmResults = open(resultsPath, 'r').read()
+	try:	
+		hmResults = open(resultsPath, 'r').read()
+	except:
+		try:
+			hmResults = open(resultsPath.lower(), 'r').read()
+		except:
+			print "Could not open File"
+			return False
 	rd_pattern = '\s+\d+\s+a\s+(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+).*'
 	time_pattern = 'Total\s+Time\:\s+(\d+\.\d+)\s+.*'
 	p = re.compile(rd_pattern + time_pattern, re.S)
@@ -50,7 +57,7 @@ def makeRDValuesFile(gopStructure):
 
 def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, mode, testIdx=0):
 	[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, mode, testIdx)
-	if os.path.isfile(resultsPath):
+	if os.path.isfile(resultsPath) or os.path.isfile(resultsPath.lower()) :
 		return
 	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
 	if numFrames:
@@ -64,5 +71,5 @@ def calcAndPrintBDRate(refTimeResults,refBDResults,testTimeResults,testBDResults
 		print >> bdRateFile, '\t%s\t%s' % (bdRates, timeSavings),
 	else:
 		timeSavings = 1.0-(sum(testTimeResults)/sum(refTimeResults))
-		bdRates = '\t'.join(["%.2f" % (bdrate(refBDResults, testBDResults, i)) for i in range(1,2)])
+		bdRates = '\t'.join(["%.5f" % (bdrate(refBDResults, testBDResults, i)/100.0) for i in range(1,2)])
 		print >> bdRateFile, '\t%s\t%.3f' % (bdRates, timeSavings),
