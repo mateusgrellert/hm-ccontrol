@@ -2,11 +2,8 @@ import operator
 
 TARGET_POINTS = [float(x)/10 for x in range(9,0,-1)]
 
-def getNextCfg(optParams, BDRateCostList, target, currBDBRInc):
-	sortedBD = sorted(BDRateCostList.items(), key=lambda x: x[1][0]) # sort by [1][0] -- BD-BR INC, [1][1] -- TIME SAVINGS
-	bestCost = 100.0
-	bestSavings = 0.0
-	bestParam = ''
+def getNextCfg(currCfg, target, currBDBRInc):
+	sortedBD = sorted(BDRateCostList.items(), key=lambda x: x[1][0]) # sort by [1][0] -- BD-BR INC, [1][1] -- TIME SAVINGS, [1][2] -- RDCCost
 	currCfg = getCfgString(optParams)
 	
 	# find param closest to target

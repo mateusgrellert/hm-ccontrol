@@ -43,5 +43,4 @@ optParamsRef = ''
 #N_TESTS = len(pathToTestBinList)
 RUN_REFERENCE = True
 RUN_TEST = True
-RUN_PARALLEL = False
 NUM_THREADS = 4

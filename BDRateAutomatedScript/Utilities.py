@@ -59,9 +59,11 @@ def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 
 	[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, mode, testIdx)
 	if os.path.isfile(resultsPath) or os.path.isfile(resultsPath.lower()) :
 		return
-	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
 	if numFrames:
-		cmdLine += ' -f ' + str(numFrames)
+		optParams += ' -f ' + str(numFrames)
+
+	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
+	
 	os.system(cmdLine)
 
 def calcAndPrintBDRate(refTimeResults,refBDResults,testTimeResults,testBDResults, bdRateFile):
