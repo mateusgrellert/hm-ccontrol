@@ -192,7 +192,7 @@ protected:
   Bool      m_bUseASR;
   Bool      m_bUseHADME;
     Int      m_iFME;
-    Int      m_bTestRect;
+    Double      m_dTestRect;
     Int      m_iRefFrames;
   Bool      m_useRDOQ;
   Bool      m_useRDOQTS;
@@ -515,7 +515,7 @@ public:
   Void      setUseASR                       ( Bool  b )     { m_bUseASR     = b; }
   Void      setUseHADME                     ( Bool  b )     { m_bUseHADME   = b; }
     Void      setFME                          ( Int  f )     { m_iFME   = f; }
-    Void      setTestRect                          ( bool  b )     { m_bTestRect   = b; }
+    Void      setTestRect                          ( double d)     { m_dTestRect   = d; }
     Void      setRefFrames                          ( Int  f )     { m_iRefFrames   = f; }
   Void      setUseRDOQ                      ( Bool  b )     { m_useRDOQ    = b; }
   Void      setUseRDOQTS                    ( Bool  b )     { m_useRDOQTS  = b; }
@@ -536,7 +536,7 @@ public:
   Bool      getUseASR                       ()      { return m_bUseASR;     }
   Bool      getUseHADME                     ()      { return m_bUseHADME;   }
     Int      getFME                     ()      { return m_iFME;   }
-    Int      getTestRect                     ()      { return m_bTestRect;   }
+    Double      getTestRect                     ()      { return m_dTestRect;   }
     Int      getRefFrames                     ()      { return m_iRefFrames;   }
   Bool      getUseRDOQ                      ()      { return m_useRDOQ;    }
   Bool      getUseRDOQTS                    ()      { return m_useRDOQTS;  }

@@ -3,7 +3,7 @@ import Configuration
 import re
 import os
 from joblib import Parallel, delayed  
-import multiprocessing
+
 
 def treatConfig(sequence, gopStructure, qp, mode, testIdx = 0):
 	gopStructure = gopStructure.split('.cfg')[0]
@@ -16,21 +16,16 @@ def treatConfig(sequence, gopStructure, qp, mode, testIdx = 0):
 	seqPath = sequencePath + '/' + sequence + '.cfg'
 	
 	if mode == 'ref':
-		resultsPath = hmOutputPath+'/hmOut_%s_%s_QP%s_REF.txt' % (sequence, gopStructure, qp)
+		resultsPath = '/hmOut_%s_%s_QP%s_REF.txt' % (sequence, gopStructure, qp)
 	else:
-		resultsPath = hmOutputPath+'/hmOut_%s_%s_QP%s_%s.txt' % (sequence, gopStructure, qp, Configuration.testNameList[testIdx])
+		resultsPath = '/hmOut_%s_%s_QP%s_%s.txt' % (sequence, gopStructure, qp, Configuration.testNameList[testIdx])
+	
+	resultsPath = hmOutputPath+ (resultsPath.lower())
 
 	return [gopPath, seqPath, resultsPath]
 
 def parseOutput(resultsPath):
-	try:	
-		hmResults = open(resultsPath, 'r').read()
-	except:
-		try:
-			hmResults = open(resultsPath.lower(), 'r').read()
-		except:
-			print "Could not open File"
-			return False
+	hmResults = open(resultsPath, 'r').read()
 	rd_pattern = '\s+\d+\s+a\s+(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+).*'
 	time_pattern = 'Total\s+Time\:\s+(\d+\.\d+)\s+.*'
 	p = re.compile(rd_pattern + time_pattern, re.S)
@@ -65,6 +60,7 @@ def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 
 	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
 	
 	os.system(cmdLine)
+
 
 def calcAndPrintBDRate(refTimeResults,refBDResults,testTimeResults,testBDResults, bdRateFile):
 	if any('N/A' == x for x in testTimeResults + refTimeResults) or any('N/A' == x for x in testBDResults + refBDResults):

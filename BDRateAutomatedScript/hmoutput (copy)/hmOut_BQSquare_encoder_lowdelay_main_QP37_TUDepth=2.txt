@@ -1,0 +1,161 @@
+******************************************************************
+** WARNING: --SEIDecodedPictureHash is now disabled by default. **
+**          Automatic verification of decoded pictures by a     **
+**          decoder requires this option to be enabled.         **
+******************************************************************
+
+HM software: Encoder Version [16.2] (including RExt)[Mac OS X][GCC 4.2.1][64 bit] 
+
+
+Input          File               : ../../origCfP/cropped/BQSquare_384x192_60.yuv
+Bitstream      File               : str.bin
+Reconstruction File               : (null)
+Real     Format                   : 384x192 60Hz
+Internal Format                   : 384x192 60Hz
+Sequence PSNR output              : Linear average only
+Sequence MSE output               : Disabled
+Frame MSE output                  : Disabled
+Cabac-zero-word-padding           : Disabled
+Frame/Field                       : Frame based coding
+Frame index                       : 0 - 63 (64 frames)
+Profile                           : main
+CU size / depth                   : 64 / 4
+RQT trans. size (min / max)       : 4 / 32
+Max RQT depth inter               : 2
+Max RQT depth intra               : 3
+Min PCM size                      : 8
+Motion search range               : 64
+Intra period                      : -1
+Decoding refresh type             : 0
+QP                                : 37.00
+Max dQP signaling depth           : 0
+FME                               : 3
+Test Rectangular SMPS             : 1
+Number Reference Frames           : 4
+Cb QP Offset                      : 0
+Cr QP Offset                      : 0
+Max CU chroma QP adjustment depth : -1
+QP adaptation                     : 0 (range=0)
+GOP size                          : 4
+Input bit depth                   : (Y:8, C:8)
+MSB-extended bit depth            : (Y:8, C:8)
+Internal bit depth                : (Y:8, C:8)
+PCM sample bit depth              : (Y:8, C:8)
+Extended precision processing     : Disabled
+Intra reference smoothing         : Enabled
+Implicit residual DPCM            : Disabled
+Explicit residual DPCM            : Disabled
+Residual rotation                 : Disabled
+Single significance map context   : Disabled
+Cross-component prediction        : Disabled
+High-precision prediction weight  : Disabled
+Golomb-Rice parameter adaptation  : Disabled
+CABAC bypass bit alignment        : Disabled
+Sao Luma Offset bit shifts        : 0
+Sao Chroma Offset bit shifts      : 0
+Cost function:                    : Lossy coding (default)
+RateControl                       : 0
+Max Num Merge Candidates          : 5
+
+TOOL CFG: IBD:0 HAD:1 RDQ:1 RDQTS:1 RDpenalty:0 SQP:0 ASR:0 FEN:1 ECU:0 FDM:1 CFM:0 ESD:0 RQT:1 TransformSkip:1 TransformSkipFast:1 TransformSkipLog2MaxSize:2 Slice: M=0 SliceSegment: M=0 CIP:0 SAO:1 PCM:0 TransQuantBypassEnabled:0 WPP:0 WPB:0 PME:2  WaveFrontSynchro:0 WaveFrontSubstreams:1 ScalingList:0 TMVPMode:1 AQpS:0 SignBitHidingFlag:1 RecalQP:0
+
+Non-environment-variable-controlled macros set as follows: 
+
+                                RExt__DECODER_DEBUG_BIT_STATISTICS =   0
+                                      RExt__HIGH_BIT_DEPTH_SUPPORT =   0
+                            RExt__HIGH_PRECISION_FORWARD_TRANSFORM =   0
+                                        O0043_BEST_EFFORT_DECODING =   0
+                              RD_TEST_SAO_DISABLE_AT_PICTURE_LEVEL =   0
+
+                   Input ChromaFormatIDC =   4:2:0
+       Output (internal) ChromaFormatIDC =   4:2:0
+
+POC    0 TId: 0 ( I-SLICE, nQP 37 QP 37 )      46688 bits [Y 29.6421 dB    U 38.4736 dB    V 38.7857 dB] [ET  0.57 ] [L0 ] [L1 ]
+POC    1 TId: 0 ( B-SLICE, nQP 40 QP 40 )        256 bits [Y 29.0748 dB    U 38.4391 dB    V 38.8210 dB] [ET  0.53 ] [L0 0 ] [L1 0 ]
+POC    2 TId: 0 ( B-SLICE, nQP 39 QP 39 )        512 bits [Y 28.6530 dB    U 38.4043 dB    V 38.8013 dB] [ET  0.87 ] [L0 1 0 ] [L1 1 0 ]
+POC    3 TId: 0 ( B-SLICE, nQP 40 QP 40 )        496 bits [Y 28.1792 dB    U 38.4545 dB    V 38.8011 dB] [ET  1.18 ] [L0 2 1 0 ] [L1 2 1 0 ]
+POC    4 TId: 0 ( B-SLICE, nQP 38 QP 38 )       3624 bits [Y 28.9150 dB    U 38.4774 dB    V 38.9927 dB] [ET  1.92 ] [L0 3 2 1 0 ] [L1 3 2 1 0 ]
+POC    5 TId: 0 ( B-SLICE, nQP 40 QP 40 )        336 bits [Y 28.4009 dB    U 38.4166 dB    V 38.8761 dB] [ET  1.41 ] [L0 4 3 2 0 ] [L1 4 3 2 0 ]
+POC    6 TId: 0 ( B-SLICE, nQP 39 QP 39 )        632 bits [Y 28.1511 dB    U 38.4308 dB    V 38.9376 dB] [ET  1.54 ] [L0 5 4 3 0 ] [L1 5 4 3 0 ]
+POC    7 TId: 0 ( B-SLICE, nQP 40 QP 40 )        632 bits [Y 27.8434 dB    U 38.3696 dB    V 38.8965 dB] [ET  1.54 ] [L0 6 5 4 0 ] [L1 6 5 4 0 ]
+POC    8 TId: 0 ( B-SLICE, nQP 38 QP 38 )       4880 bits [Y 28.9329 dB    U 38.4066 dB    V 38.9115 dB] [ET  2.00 ] [L0 7 6 4 0 ] [L1 7 6 4 0 ]
+POC    9 TId: 0 ( B-SLICE, nQP 40 QP 40 )        320 bits [Y 28.4248 dB    U 38.3834 dB    V 38.8417 dB] [ET  1.67 ] [L0 8 7 4 0 ] [L1 8 7 4 0 ]
+POC   10 TId: 0 ( B-SLICE, nQP 39 QP 39 )        576 bits [Y 28.0763 dB    U 38.3714 dB    V 38.8125 dB] [ET  1.49 ] [L0 9 8 4 0 ] [L1 9 8 4 0 ]
+POC   11 TId: 0 ( B-SLICE, nQP 40 QP 40 )        648 bits [Y 27.8265 dB    U 38.3913 dB    V 38.7558 dB] [ET  1.56 ] [L0 10 8 4 0 ] [L1 10 8 4 0 ]
+POC   12 TId: 0 ( B-SLICE, nQP 38 QP 38 )       4896 bits [Y 28.8742 dB    U 38.4448 dB    V 38.7382 dB] [ET  1.98 ] [L0 11 8 4 0 ] [L1 11 8 4 0 ]
+POC   13 TId: 0 ( B-SLICE, nQP 40 QP 40 )        280 bits [Y 28.3550 dB    U 38.4240 dB    V 38.6919 dB] [ET  1.45 ] [L0 12 8 4 0 ] [L1 12 8 4 0 ]
+POC   14 TId: 0 ( B-SLICE, nQP 39 QP 39 )        632 bits [Y 28.0733 dB    U 38.4352 dB    V 38.6701 dB] [ET  1.49 ] [L0 13 12 8 4 ] [L1 13 12 8 4 ]
+POC   15 TId: 0 ( B-SLICE, nQP 40 QP 40 )        408 bits [Y 27.6598 dB    U 38.3918 dB    V 38.6565 dB] [ET  1.48 ] [L0 14 12 8 4 ] [L1 14 12 8 4 ]
+POC   16 TId: 0 ( B-SLICE, nQP 38 QP 38 )       4192 bits [Y 28.6403 dB    U 38.4282 dB    V 38.8557 dB] [ET  1.99 ] [L0 15 12 8 4 ] [L1 15 12 8 4 ]
+POC   17 TId: 0 ( B-SLICE, nQP 40 QP 40 )        344 bits [Y 28.1602 dB    U 38.4035 dB    V 38.8388 dB] [ET  1.38 ] [L0 16 12 8 4 ] [L1 16 12 8 4 ]
+POC   18 TId: 0 ( B-SLICE, nQP 39 QP 39 )        736 bits [Y 27.9240 dB    U 38.3380 dB    V 38.8280 dB] [ET  1.35 ] [L0 17 16 12 8 ] [L1 17 16 12 8 ]
+POC   19 TId: 0 ( B-SLICE, nQP 40 QP 40 )        552 bits [Y 27.5476 dB    U 38.3122 dB    V 38.8307 dB] [ET  1.33 ] [L0 18 16 12 8 ] [L1 18 16 12 8 ]
+POC   20 TId: 0 ( B-SLICE, nQP 38 QP 38 )       5072 bits [Y 28.6620 dB    U 38.4445 dB    V 38.7866 dB] [ET  1.79 ] [L0 19 16 12 8 ] [L1 19 16 12 8 ]
+POC   21 TId: 0 ( B-SLICE, nQP 40 QP 40 )        376 bits [Y 28.1500 dB    U 38.3882 dB    V 38.7769 dB] [ET  1.28 ] [L0 20 16 12 8 ] [L1 20 16 12 8 ]
+POC   22 TId: 0 ( B-SLICE, nQP 39 QP 39 )        888 bits [Y 27.9380 dB    U 38.3550 dB    V 38.7653 dB] [ET  1.38 ] [L0 21 20 16 12 ] [L1 21 20 16 12 ]
+POC   23 TId: 0 ( B-SLICE, nQP 40 QP 40 )        528 bits [Y 27.5894 dB    U 38.3409 dB    V 38.7370 dB] [ET  1.29 ] [L0 22 20 16 12 ] [L1 22 20 16 12 ]
+POC   24 TId: 0 ( B-SLICE, nQP 38 QP 38 )       5248 bits [Y 28.5795 dB    U 38.2689 dB    V 38.7880 dB] [ET  1.77 ] [L0 23 20 16 12 ] [L1 23 20 16 12 ]
+POC   25 TId: 0 ( B-SLICE, nQP 40 QP 40 )        320 bits [Y 28.1179 dB    U 38.2530 dB    V 38.7279 dB] [ET  1.27 ] [L0 24 20 16 12 ] [L1 24 20 16 12 ]
+POC   26 TId: 0 ( B-SLICE, nQP 39 QP 39 )        656 bits [Y 27.8146 dB    U 38.2058 dB    V 38.6935 dB] [ET  1.32 ] [L0 25 24 20 16 ] [L1 25 24 20 16 ]
+POC   27 TId: 0 ( B-SLICE, nQP 40 QP 40 )        632 bits [Y 27.5306 dB    U 38.2068 dB    V 38.6408 dB] [ET  1.36 ] [L0 26 24 20 16 ] [L1 26 24 20 16 ]
+POC   28 TId: 0 ( B-SLICE, nQP 38 QP 38 )       4688 bits [Y 28.4667 dB    U 38.2368 dB    V 38.7155 dB] [ET  1.76 ] [L0 27 24 20 16 ] [L1 27 24 20 16 ]
+POC   29 TId: 0 ( B-SLICE, nQP 40 QP 40 )        232 bits [Y 28.0029 dB    U 38.2232 dB    V 38.6643 dB] [ET  1.27 ] [L0 28 24 20 16 ] [L1 28 24 20 16 ]
+POC   30 TId: 0 ( B-SLICE, nQP 39 QP 39 )        688 bits [Y 27.7087 dB    U 38.2428 dB    V 38.6298 dB] [ET  1.37 ] [L0 29 28 24 20 ] [L1 29 28 24 20 ]
+POC   31 TId: 0 ( B-SLICE, nQP 40 QP 40 )        592 bits [Y 27.3775 dB    U 38.2041 dB    V 38.6030 dB] [ET  1.35 ] [L0 30 28 24 20 ] [L1 30 28 24 20 ]
+POC   32 TId: 0 ( B-SLICE, nQP 38 QP 38 )       5280 bits [Y 28.5048 dB    U 38.2565 dB    V 38.6797 dB] [ET  1.83 ] [L0 31 28 24 20 ] [L1 31 28 24 20 ]
+POC   33 TId: 0 ( B-SLICE, nQP 40 QP 40 )        216 bits [Y 28.0378 dB    U 38.2764 dB    V 38.6382 dB] [ET  1.25 ] [L0 32 28 24 20 ] [L1 32 28 24 20 ]
+POC   34 TId: 0 ( B-SLICE, nQP 39 QP 39 )        648 bits [Y 27.7470 dB    U 38.2388 dB    V 38.6224 dB] [ET  1.36 ] [L0 33 32 28 24 ] [L1 33 32 28 24 ]
+POC   35 TId: 0 ( B-SLICE, nQP 40 QP 40 )        496 bits [Y 27.4342 dB    U 38.2477 dB    V 38.5677 dB] [ET  1.36 ] [L0 34 32 28 24 ] [L1 34 32 28 24 ]
+POC   36 TId: 0 ( B-SLICE, nQP 38 QP 38 )       4784 bits [Y 28.4209 dB    U 38.2764 dB    V 38.6299 dB] [ET  1.79 ] [L0 35 32 28 24 ] [L1 35 32 28 24 ]
+POC   37 TId: 0 ( B-SLICE, nQP 40 QP 40 )        224 bits [Y 27.9686 dB    U 38.2372 dB    V 38.6240 dB] [ET  1.28 ] [L0 36 32 28 24 ] [L1 36 32 28 24 ]
+POC   38 TId: 0 ( B-SLICE, nQP 39 QP 39 )        608 bits [Y 27.7113 dB    U 38.2217 dB    V 38.6127 dB] [ET  1.38 ] [L0 37 36 32 28 ] [L1 37 36 32 28 ]
+POC   39 TId: 0 ( B-SLICE, nQP 40 QP 40 )        448 bits [Y 27.3408 dB    U 38.1803 dB    V 38.5770 dB] [ET  1.39 ] [L0 38 36 32 28 ] [L1 38 36 32 28 ]
+POC   40 TId: 0 ( B-SLICE, nQP 38 QP 38 )       5512 bits [Y 28.4532 dB    U 38.2670 dB    V 38.7599 dB] [ET  1.83 ] [L0 39 36 32 28 ] [L1 39 36 32 28 ]
+POC   41 TId: 0 ( B-SLICE, nQP 40 QP 40 )        200 bits [Y 27.9657 dB    U 38.2902 dB    V 38.7446 dB] [ET  1.32 ] [L0 40 36 32 28 ] [L1 40 36 32 28 ]
+POC   42 TId: 0 ( B-SLICE, nQP 39 QP 39 )        704 bits [Y 27.7417 dB    U 38.2494 dB    V 38.7967 dB] [ET  1.44 ] [L0 41 40 36 32 ] [L1 41 40 36 32 ]
+POC   43 TId: 0 ( B-SLICE, nQP 40 QP 40 )        464 bits [Y 27.3697 dB    U 38.2508 dB    V 38.7692 dB] [ET  1.34 ] [L0 42 40 36 32 ] [L1 42 40 36 32 ]
+POC   44 TId: 0 ( B-SLICE, nQP 38 QP 38 )       4808 bits [Y 28.3815 dB    U 38.3199 dB    V 38.7848 dB] [ET  1.81 ] [L0 43 40 36 32 ] [L1 43 40 36 32 ]
+POC   45 TId: 0 ( B-SLICE, nQP 40 QP 40 )        304 bits [Y 27.9170 dB    U 38.3067 dB    V 38.7435 dB] [ET  1.30 ] [L0 44 40 36 32 ] [L1 44 40 36 32 ]
+POC   46 TId: 0 ( B-SLICE, nQP 39 QP 39 )        664 bits [Y 27.7295 dB    U 38.2817 dB    V 38.7358 dB] [ET  1.37 ] [L0 45 44 40 36 ] [L1 45 44 40 36 ]
+POC   47 TId: 0 ( B-SLICE, nQP 40 QP 40 )        584 bits [Y 27.4228 dB    U 38.2544 dB    V 38.6885 dB] [ET  1.39 ] [L0 46 44 40 36 ] [L1 46 44 40 36 ]
+POC   48 TId: 0 ( B-SLICE, nQP 38 QP 38 )       5064 bits [Y 28.3756 dB    U 38.2898 dB    V 38.7507 dB] [ET  1.80 ] [L0 47 44 40 36 ] [L1 47 44 40 36 ]
+POC   49 TId: 0 ( B-SLICE, nQP 40 QP 40 )        336 bits [Y 27.8450 dB    U 38.2541 dB    V 38.7425 dB] [ET  1.30 ] [L0 48 44 40 36 ] [L1 48 44 40 36 ]
+POC   50 TId: 0 ( B-SLICE, nQP 39 QP 39 )        656 bits [Y 27.5625 dB    U 38.2287 dB    V 38.7195 dB] [ET  1.38 ] [L0 49 48 44 40 ] [L1 49 48 44 40 ]
+POC   51 TId: 0 ( B-SLICE, nQP 40 QP 40 )        600 bits [Y 27.2852 dB    U 38.2281 dB    V 38.6486 dB] [ET  1.39 ] [L0 50 48 44 40 ] [L1 50 48 44 40 ]
+POC   52 TId: 0 ( B-SLICE, nQP 38 QP 38 )       5488 bits [Y 28.3721 dB    U 38.2470 dB    V 38.8422 dB] [ET  1.88 ] [L0 51 48 44 40 ] [L1 51 48 44 40 ]
+POC   53 TId: 0 ( B-SLICE, nQP 40 QP 40 )        384 bits [Y 27.7924 dB    U 38.2438 dB    V 38.8157 dB] [ET  1.32 ] [L0 52 48 44 40 ] [L1 52 48 44 40 ]
+POC   54 TId: 0 ( B-SLICE, nQP 39 QP 39 )        904 bits [Y 27.4796 dB    U 38.1895 dB    V 38.7816 dB] [ET  1.41 ] [L0 53 52 48 44 ] [L1 53 52 48 44 ]
+POC   55 TId: 0 ( B-SLICE, nQP 40 QP 40 )        648 bits [Y 27.1725 dB    U 38.1917 dB    V 38.6995 dB] [ET  1.42 ] [L0 54 52 48 44 ] [L1 54 52 48 44 ]
+POC   56 TId: 0 ( B-SLICE, nQP 38 QP 38 )       6328 bits [Y 28.3571 dB    U 38.1651 dB    V 38.7169 dB] [ET  1.84 ] [L0 55 52 48 44 ] [L1 55 52 48 44 ]
+POC   57 TId: 0 ( B-SLICE, nQP 40 QP 40 )        376 bits [Y 27.7015 dB    U 38.0860 dB    V 38.6852 dB] [ET  1.32 ] [L0 56 52 48 44 ] [L1 56 52 48 44 ]
+POC   58 TId: 0 ( B-SLICE, nQP 39 QP 39 )        920 bits [Y 27.4905 dB    U 38.0676 dB    V 38.6562 dB] [ET  1.44 ] [L0 57 56 52 48 ] [L1 57 56 52 48 ]
+POC   59 TId: 0 ( B-SLICE, nQP 40 QP 40 )        544 bits [Y 27.0102 dB    U 38.0331 dB    V 38.5988 dB] [ET  1.41 ] [L0 58 56 52 48 ] [L1 58 56 52 48 ]
+POC   60 TId: 0 ( B-SLICE, nQP 38 QP 38 )       6272 bits [Y 28.3194 dB    U 38.0184 dB    V 38.6077 dB] [ET  1.86 ] [L0 59 56 52 48 ] [L1 59 56 52 48 ]
+POC   61 TId: 0 ( B-SLICE, nQP 40 QP 40 )        376 bits [Y 27.7520 dB    U 37.9680 dB    V 38.6206 dB] [ET  1.36 ] [L0 60 56 52 48 ] [L1 60 56 52 48 ]
+POC   62 TId: 0 ( B-SLICE, nQP 39 QP 39 )        832 bits [Y 27.4062 dB    U 37.9753 dB    V 38.5428 dB] [ET  1.42 ] [L0 61 60 56 52 ] [L1 61 60 56 52 ]
+POC   63 TId: 0 ( B-SLICE, nQP 40 QP 40 )        696 bits [Y 27.0787 dB    U 37.9201 dB    V 38.4990 dB] [ET  1.39 ] [L0 62 60 56 52 ] [L1 62 60 56 52 ]
+
+
+SUMMARY --------------------------------------------------------
+	Total Frames |   Bitrate     Y-PSNR    U-PSNR    V-PSNR    YUV-PSNR 
+	       64    a     138.6825   28.0069   38.2786   38.7308   29.5486
+
+
+I Slices--------------------------------------------------------
+	Total Frames |   Bitrate     Y-PSNR    U-PSNR    V-PSNR    YUV-PSNR 
+	        1    i    2801.2800   29.6421   38.4736   38.7857   31.1370
+
+
+P Slices--------------------------------------------------------
+	Total Frames |   Bitrate     Y-PSNR    U-PSNR    V-PSNR    YUV-PSNR 
+	        0    p          nan       nan       nan       nan       nan
+
+
+B Slices--------------------------------------------------------
+	Total Frames |   Bitrate     Y-PSNR    U-PSNR    V-PSNR    YUV-PSNR 
+	       63    b      96.4190   27.9809   38.2755   38.7300   29.5276
+
+RVM: 0.000
+Bytes written to file: 0 (0.000 kbps)
+
+ Total Time:       93.366 sec.

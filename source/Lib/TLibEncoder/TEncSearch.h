@@ -319,7 +319,7 @@ protected:
                                     Bool        bFilled = false
                                   , Distortion* puiDistBiP = NULL
                                      );
-
+  
   Void xCheckBestMVP              ( TComDataCU* pcCU,
                                     RefPicList  eRefPicList,
                                     TComMv      cMv,

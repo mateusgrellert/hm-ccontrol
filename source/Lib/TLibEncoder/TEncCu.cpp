@@ -399,10 +399,28 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
   Int iMinQP;
   Int iMaxQP;
   Bool isAddLowestQP = false;
-
+  Bool bTestRect = true;
   const UInt numberValidComponents = rpcBestCU->getPic()->getNumberValidComponents();
-
-
+  std::string testRectMask;
+  
+  double test_period = m_pcEncCfg->getTestRect();
+  if(test_period < 1.0){
+      switch((int)(test_period*10)){
+          case 9: testRectMask = "1111011111";
+          case 8: testRectMask = "1111011110";
+          case 7: testRectMask = "1101110110";
+          case 6: testRectMask = "1010110101";
+          case 5: testRectMask = "1010101010";
+          case 4: testRectMask = "1010001010";
+          case 3: testRectMask = "1001000100";
+          case 2: testRectMask = "1000010000";
+          case 1: testRectMask = "1000000000";
+      }
+      bTestRect = testRectMask[rpcTempCU->getPic()->getPOC()];
+  }
+  else{
+      bTestRect = true;
+  }
 
   if( (g_uiMaxCUWidth>>uiDepth) >= rpcTempCU->getSlice()->getPPS()->getMinCuDQPSize() )
   {
@@ -514,14 +532,15 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
           // 2Nx2N, NxN
           if(!( (rpcBestCU->getWidth(0)==8) && (rpcBestCU->getHeight(0)==8) ))
           {
-            if( uiDepth == g_uiMaxCUDepth - g_uiAddCUDepth && doNotBlockPu && m_pcEncCfg->getTestRect())
+
+            if( uiDepth == g_uiMaxCUDepth - g_uiAddCUDepth && doNotBlockPu && bTestRect )
             {
               xCheckRDCostInter( rpcBestCU, rpcTempCU, SIZE_NxN DEBUG_STRING_PASS_INTO(sDebug)   );
               rpcTempCU->initEstData( uiDepth, iQP, bIsLosslessMode );
             }
           }
 
-          if(doNotBlockPu && m_pcEncCfg->getTestRect())
+          if(doNotBlockPu && bTestRect)
           {
             xCheckRDCostInter( rpcBestCU, rpcTempCU, SIZE_Nx2N DEBUG_STRING_PASS_INTO(sDebug)  );
             rpcTempCU->initEstData( uiDepth, iQP, bIsLosslessMode );
@@ -530,7 +549,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
               doNotBlockPu = rpcBestCU->getQtRootCbf( 0 ) != 0;
             }
           }
-          if(doNotBlockPu && m_pcEncCfg->getTestRect())
+          if(doNotBlockPu && bTestRect)
           {
             xCheckRDCostInter      ( rpcBestCU, rpcTempCU, SIZE_2NxN DEBUG_STRING_PASS_INTO(sDebug)  );
             rpcTempCU->initEstData( uiDepth, iQP, bIsLosslessMode );

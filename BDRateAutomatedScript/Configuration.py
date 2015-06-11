@@ -29,12 +29,12 @@ sequenceList = [['BQSquare', 64],['BlowingBubbles', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
 				['ChinaSpeed', 64],['BasketballDrillText', 64], \
 				['Johnny', 64],  ['FourPeople',64]]
-#sequenceList = [['BQSquare', 64]]
+sequenceList = [['BQMall', 16]]
 qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
 sequencePath = '/home/grellert/hm-cfgs/cropped'
-hmOutputPath = './hmoutput'
+hmOutputPath = './hmOutput'  #ESSA PASTA PRECISA EXISTIR!
 
 pathToRefBin = '../bin/TAppEncoderStatic_Ref'
 optParamsRef = ''
@@ -44,4 +44,5 @@ optParamsRef = ''
 N_TESTS = len(pathToTestBinList)
 RUN_REFERENCE = True
 RUN_TEST = True
-NUM_THREADS = 8
+#RUN_PARALLEL = False
+NUM_THREADS = 4

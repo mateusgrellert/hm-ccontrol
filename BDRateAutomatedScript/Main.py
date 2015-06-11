@@ -3,7 +3,7 @@ from Utilities import *
 import Configuration
 import os
 from joblib import Parallel, delayed  
-import multiprocessing
+
 
 for gopStructure in Configuration.gopStructureList:
 	bdRateFile = makeBDRateFile(gopStructure)
@@ -17,9 +17,11 @@ for gopStructure in Configuration.gopStructureList:
 		pathToBin = Configuration.pathToRefBin
 		rdFileLine = {}
 		if Configuration.RUN_REFERENCE:
-			Parallel(n_jobs=Configuration.NUM_THREADS)(delayed(runParallelSims)(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'ref') for qp in Configuration.qpList)	
-			#for qp in Configuration.qpList:
-			#	runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'ref')
+			if Configuration.RUN_PARALLEL:
+				Parallel(n_jobs=Configuration.NUM_THREADS)(delayed(runParallelSims)(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'ref') for qp in Configuration.qpList)
+			else:
+				for qp in Configuration.qpList:
+					runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'ref') 
 
 		for qp in Configuration.qpList:
 			[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, 'ref')
@@ -39,11 +41,14 @@ for gopStructure in Configuration.gopStructureList:
 			testTimeResults = []
 			optParams = Configuration.optParamsTestList[testIdx]
 			pathToBin = Configuration.pathToTestBinList[testIdx]
-
+			testName = Configuration.testNameList[testIdx]
 			if Configuration.RUN_TEST:
-				Parallel(n_jobs=Configuration.NUM_THREADS)(delayed(runParallelSims)(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'test', testIdx) for qp in Configuration.qpList)
-				#for qp in Configuration.qpList:
-					#runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'test', testIdx)
+				if Configuration.RUN_PARALLEL:
+					Parallel(n_jobs=Configuration.NUM_THREADS)(delayed(runParallelSims)(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'test', testIdx) for qp in Configuration.qpList)	
+				else:
+					for qp in Configuration.qpList:
+						runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'test', testIdx)
+
 
 			for qp in Configuration.qpList:
 				[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, 'test', testIdx)

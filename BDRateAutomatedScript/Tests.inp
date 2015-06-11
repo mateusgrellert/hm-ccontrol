@@ -1,23 +1,6 @@
 #    FORMAT:  TEST_NAME PATH_TO_ REF TEST PARAMS (SEPARATED BY SPACES)
 
-REFS=3 ../bin/TAppEncoderStatic_Ref RefFrames=3
-REFS=2 ../bin/TAppEncoderStatic_Ref RefFrames=2
-REFS=1 ../bin/TAppEncoderStatic_Ref RefFrames=1
-CUDepth=3 ../bin/TAppEncoderStatic_Ref MaxPartitionDepth=3
-CUDepth=2 ../bin/TAppEncoderStatic_Ref MaxPartitionDepth=2
-CUDepth=1 ../bin/TAppEncoderStatic_Ref MaxPartitionDepth=1
-AMP=0 ../bin/TAppEncoderStatic_Ref AMP=0
-FME=2 ../bin/TAppEncoderStatic_Ref FME=2
-FME=1 ../bin/TAppEncoderStatic_Ref FME=1
-FME=0 ../bin/TAppEncoderStatic_Ref FME=0
-HAD=0 ../bin/TAppEncoderStatic_Ref HadamardME=0
-SR=32 ../bin/TAppEncoderStatic_Ref SearchRange=32
-SR=8 ../bin/TAppEncoderStatic_Ref SearchRange=8
-SR=0 ../bin/TAppEncoderStatic_Ref SearchRange=0
-TUDepth=2 ../bin/TAppEncoderStatic_Ref QuadtreeTUMaxDepthInter=2
-TUDepth=1 ../bin/TAppEncoderStatic_Ref QuadtreeTUMaxDepthInter=1
-TestRect=0 ../bin/TAppEncoderStatic_Ref TestRect=0
-RDOQ=0 ../bin/TAppEncoderStatic_Ref RDOQ=0
-BIPRED=2 ../bin/TAppEncoderStatic_Ref BipredSearchRange=2
-BIPRED=0 ../bin/TAppEncoderStatic_Ref BipredSearchRange=0
-LOWER_BOUND ../bin/TAppEncoderStatic_Ref RefFrames=1 MaxPartitionDepth=1 AMP=0 FME=0 FME=0 SearchRange=0 QuadtreeTUMaxDepthInter=1 TestRect=0 RDOQ=0 BipredSearchRange=0
+TestRectPeriod=0.2 ../bin/TAppEncoderStatic_Ref TestRect=0.2
+TestRectPeriod=0.4 ../bin/TAppEncoderStatic_Ref TestRect=0.4
+TestRectPeriod=0.6 ../bin/TAppEncoderStatic_Ref TestRect=0.6
+TestRectPeriod=0.8 ../bin/TAppEncoderStatic_Ref TestRect=0.8
