@@ -1,8 +1,8 @@
 from Bjontegaard import *
 import Configuration
 import re
-import subprocess
- 
+import os
+from joblib import Parallel, delayed  
 
 
 def treatConfig(sequence, gopStructure, qp, mode, testIdx = 0):
@@ -57,20 +57,10 @@ def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 
 	if numFrames:
 		optParams += ' -f ' + str(numFrames)
 
-	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
-	
-	subprocess.call(cmdLine, shell=True, stderr=subprocess.STDOUT)
+	cmdLine = '%s -c %s -c %s -q %s %s > %s 2> /dev/null ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
+	print cmdLine
+	os.system(cmdLine)
 
-def runSimpleSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, mode, testIdx=0):
-	[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, mode, testIdx)
-	if os.path.isfile(resultsPath) or os.path.isfile(resultsPath.lower()) :
-		return
-	if numFrames:
-		optParams += ' -f ' + str(numFrames)
-
-	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
-	
-	subprocess.call(cmdLine, shell=True, stderr=subprocess.STDOUT)
 
 def calcAndPrintBDRate(refTimeResults,refBDResults,testTimeResults,testBDResults, bdRateFile):
 	if any('N/A' == x for x in testTimeResults + refTimeResults) or any('N/A' == x for x in testBDResults + refBDResults):

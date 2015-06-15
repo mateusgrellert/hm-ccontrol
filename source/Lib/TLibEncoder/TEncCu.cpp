@@ -406,17 +406,18 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
   double test_period = m_pcEncCfg->getTestRect();
   if(test_period < 1.0){
       switch((int)(test_period*10)){
-          case 9: testRectMask = "1111011111";
-          case 8: testRectMask = "1111011110";
-          case 7: testRectMask = "1101110110";
-          case 6: testRectMask = "1010110101";
-          case 5: testRectMask = "1010101010";
-          case 4: testRectMask = "1010001010";
-          case 3: testRectMask = "1001000100";
-          case 2: testRectMask = "1000010000";
-          case 1: testRectMask = "1000000000";
+          case 9: testRectMask = "1111011111"; break;
+          case 8: testRectMask = "1111011110"; break;
+          case 7: testRectMask = "1101110110"; break;
+          case 6: testRectMask = "1010110101"; break;
+          case 5: testRectMask = "1010101010"; break;
+          case 4: testRectMask = "1010010010"; break;
+          case 3: testRectMask = "1001000100"; break;
+          case 2: testRectMask = "1000010000"; break;
+          case 1: testRectMask = "1000000000"; break;
+          default: testRectMask ="0000000000"; break;
       }
-      bTestRect = testRectMask[rpcTempCU->getPic()->getPOC()];
+      bTestRect = testRectMask[(rpcTempCU->getPic()->getPOC()%10)-1];
   }
   else{
       bTestRect = true;

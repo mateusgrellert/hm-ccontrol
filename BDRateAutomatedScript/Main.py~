@@ -17,7 +17,7 @@ for gopStructure in Configuration.gopStructureList:
 		pathToBin = Configuration.pathToRefBin
 		rdFileLine = {}
 		if Configuration.RUN_REFERENCE:
-			#if Configuration.RUN_PARALLEL:
+			if Configuration.RUN_PARALLEL:
 				Parallel(n_jobs=Configuration.NUM_THREADS)(delayed(runParallelSims)(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 'ref') for qp in Configuration.qpList)
 			else:
 				for qp in Configuration.qpList:
