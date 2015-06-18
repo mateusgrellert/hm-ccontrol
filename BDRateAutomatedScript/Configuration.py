@@ -29,12 +29,12 @@ sequenceList = [['BQSquare', 64],['BlowingBubbles', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
 				['ChinaSpeed', 64],['BasketballDrillText', 64], \
 				['Johnny', 64],  ['FourPeople',64]]
-sequenceList = [['BQMall', 16]]
+#sequenceList = [['BQMall', 16]]
 qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
-sequencePath = '/home/grellert/hm-cfgs/cropped'
-hmOutputPath = './hmOutput'  #ESSA PASTA PRECISA EXISTIR!
+sequencePath = '/Users/grellert/hm-cfgs/cropped'
+hmOutputPath = './hmoutput'  #ESSA PASTA PRECISA EXISTIR! IDEALMENTE TUDO MINUSCULO NESSE NOME!
 
 pathToRefBin = '../bin/TAppEncoderStatic_Ref'
 optParamsRef = ''
