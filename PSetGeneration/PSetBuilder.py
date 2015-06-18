@@ -2,14 +2,12 @@ import operator
 
 TARGET_POINTS = [float(x)/10 for x in range(9,0,-1)]
 
-def getNextCfg(currCfg, target, currBDBRInc):
+def getNextCfg(currCfg, target, currBDBRInc, BDRateCostList):
 	sortedBD = sorted(BDRateCostList.items(), key=lambda x: x[1][0]) # sort by [1][0] -- BD-BR INC, [1][1] -- TIME SAVINGS, [1][2] -- RDCCost
-	currCfg = getCfgString(optParams)
-	
-	if currCfg == '':
-		
+	currCfgStr = getCfgString(optParams)
+
 	# find param closest to target
-	for param, timeandbdinc in sortedBD:
+	for cfg, time_bdinc_rdccost in sortedBD:
 		[bdInc, timeSavings] = timeandbdinc
 		if timeSavings <= target:
 			bestCost = bdInc
@@ -34,7 +32,7 @@ def getNextCfg(currCfg, target, currBDBRInc):
 		currCfg = ''
 		bestParam = nextParam
 
-	return joinConfigs(currCfg, bestParam)
+	return [BDRateCostList, joinConfigs(currCfgStr, bestParam)]
 	
 def removeParamIfExists(currCfg, param):
 	[p,val] = param.split('=')
@@ -55,10 +53,10 @@ def joinConfigs(cfg, param):
 		return ' --'+param
 
 def getCfgString(optParams):
-	return '_'.join([x.strip('--') for x in optParams.split()])
+	return '_'.join([x.strip('--') for x in sorted(optParams.split())])
 
 
 #  PARAM: [BD-BR INC, TIME SAVINGS, RDCCost]
-BDRateCostList = {'SearchRange=32' : [0.033,0.000,0.014],'BipredSearchRange=2' : [0.052,0.001,0.022],'QuadtreeTUMaxDepthInter=2' : [0.098,0.003,0.031],'TestRect=0' : [0.435,0.021,0.049],'BipredSearchRange=0' : [0.069,0.005,0.066],'SearchRange=8' : [0.056,0.004,0.066],'QuadtreeTUMaxDepthInter=1' : [0.161,0.013,0.081],'AMP=0' : [0.103,0.010,0.098],'RefFrames=3' : [0.157,0.019,0.119],'HadamardME=0' : [0.088,0.013,0.151],'RefFrames=2' : [0.309,0.048,0.155],'FME=1' : [0.243,0.039,0.160],'MaxPartitionDepth=3' : [0.228,0.057,0.248],'RefFrames=1' : [0.451,0.125,0.278],'FME=0' : [0.409,0.141,0.345],'SearchRange=0' : [0.090,0.038,0.419],'RDOQ=0' : [0.074,0.032,0.427],'MaxPartitionDepth=2' : [0.559,0.246,0.440],'FME=2' : [0.188,0.152,0.809],'MaxPartitionDepth=1' : [0.770,0.650,0.845]}
+BDRateCostList = {'': [0, 0, 0], 'SearchRange=32' : [0.033,0.000,0.014],'BipredSearchRange=2' : [0.052,0.001,0.022],'QuadtreeTUMaxDepthInter=2' : [0.098,0.003,0.031],'TestRect=0' : [0.435,0.021,0.049],'BipredSearchRange=0' : [0.069,0.005,0.066],'SearchRange=8' : [0.056,0.004,0.066],'QuadtreeTUMaxDepthInter=1' : [0.161,0.013,0.081],'AMP=0' : [0.103,0.010,0.098],'RefFrames=3' : [0.157,0.019,0.119],'HadamardME=0' : [0.088,0.013,0.151],'RefFrames=2' : [0.309,0.048,0.155],'FME=1' : [0.243,0.039,0.160],'MaxPartitionDepth=3' : [0.228,0.057,0.248],'RefFrames=1' : [0.451,0.125,0.278],'FME=0' : [0.409,0.141,0.345],'SearchRange=0' : [0.090,0.038,0.419],'RDOQ=0' : [0.074,0.032,0.427],'MaxPartitionDepth=2' : [0.559,0.246,0.440],'FME=2' : [0.188,0.152,0.809],'MaxPartitionDepth=1' : [0.770,0.650,0.845]}
 
 #visited = {'SearchRange=32': False, 'QuadtreeTUMaxDepthInter=2': False, 'TestRect=0': False, 'QuadtreeTUMaxDepthInter=1': False, 'AMP=0': False, 'SearchRange=8': False, 'HadamardME=0': False, 'MaxPartitionDepth=3': False, 'FME=1': False, 'RefFrames=1': False, 'RefFrames=2': False, 'MaxPartitionDepth=2': False, 'FME=0': False, 'MaxPartitionDepth=1': False, 'SearchRange=0': False, 'FME=2': False}

@@ -403,9 +403,9 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
   const UInt numberValidComponents = rpcBestCU->getPic()->getNumberValidComponents();
   std::string testRectMask;
   
-  double test_period = m_pcEncCfg->getTestRect();
-  if(test_period < 1.0){
-      switch((int)(test_period*10)){
+  int test_period = (int) (m_pcEncCfg->getTestRect()*10);
+  if(test_period < 10 and rpcTempCU->getPic()->getPOC() > 0){
+      switch(test_period){
           case 9: testRectMask = "1111011111"; break;
           case 8: testRectMask = "1111011110"; break;
           case 7: testRectMask = "1101110110"; break;
@@ -417,7 +417,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
           case 1: testRectMask = "1000000000"; break;
           default: testRectMask ="0000000000"; break;
       }
-      bTestRect = testRectMask[(rpcTempCU->getPic()->getPOC()%10)-1];
+      bTestRect = (int) (testRectMask[(rpcTempCU->getPic()->getPOC()-1)%10] - '0');
   }
   else{
       bTestRect = true;

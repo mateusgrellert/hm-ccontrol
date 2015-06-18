@@ -1,0 +1,6 @@
+# FORMAT:  TEST_NAME PATH_TO_TEST_BIN TEST PARAMS (SEPARATED BY SPACES)
+
+TestRectPeriod=0.2 ../bin/TAppEncoderStatic_Ref AMP=0
+TestRectPeriod=0.4 ../bin/TAppEncoderStatic_Ref SearchRange=64
+TestRectPeriod=0.6 ../bin/TAppEncoderStatic_Ref TestRect=0.6
+TestRectPeriod=0.8 ../bin/TAppEncoderStatic_Ref TestRect=0.8
