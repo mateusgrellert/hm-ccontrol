@@ -1,62 +1,59 @@
 import operator
 
-TARGET_POINTS = [float(x)/10 for x in range(9,0,-1)]
+def getNextCfg(currCmd, costList):
+	sortedBD = sorted(costList.items(), key=lambda x: x[1][2]) # sort by [1][0] -- BD-BR INC, [1][1] -- TIME SAVINGS, [1][2] -- RDCCost
+	currCfgStr = getCfgString(currCmd)
+	if not currCfgStr:
+		currCfgStr = sortedBD[1][0]
 
-def getNextCfg(currCfg, target, currBDBRInc, BDRateCostList):
-	sortedBD = sorted(BDRateCostList.items(), key=lambda x: x[1][0]) # sort by [1][0] -- BD-BR INC, [1][1] -- TIME SAVINGS, [1][2] -- RDCCost
-	currCfgStr = getCfgString(optParams)
+	for cfg, time_bdinc_rdccost in sortedBD:
+		[bdInc, timeSavings, rdccost] = time_bdinc_rdccost
+		jointCfg = joinConfigs(currCfgStr, cfg)
+		if jointCfg not in costList.keys():
+			return getCmdString(jointCfg)
 
-	# find param closest to target
-	for param, time_bdinc_rdccost in sortedBD:
-		[bdInc, timeSavings] = timeandbdinc
-		if timeSavings <= target:
-			bestCost = bdInc
-			bestParam = param
-			bestSavings = timeSavings
-			bestIdx = i
-		elif timeSavings > target:
-			nextCost = bdInc
-			nextParam = param
-			nextSavings = timeSavings
-			nextIdx = i
-			break
-		i += 1
-	
-	i = 0
-	while bestParam in currCfg and i < bestIdx:
-		bestParam = sortedBD[i][0]
-		i+=1
+			
 
 
-	if bestParam in currCfg or (currBDBRInc > nextCost): #flush current CFG
-		currCfg = ''
-		bestParam = nextParam
-
-	return [BDRateCostList, joinConfigs(currCfgStr, bestParam)]
 	
 def removeParamIfExists(currCfg, param):
-	[p,val] = param.split('=')
-	currParams = currCfg.split('_')
-	for currP in currParams:
-		if p in currP:
-			currParams.remove(currP)
-	return '_'.join(currParams)
+	if param:
+		[p,val] = param.split('=')
+		currParams = currCfg.split('_')
+		for currP_Val in currParams:
+			currP = currP_Val.split('=')[0]
+			if p == currP:
+				currParams.remove(currP_Val)
+		return '_'.join(currParams)
+	else: return currCfg
 
 
-def joinConfigs(cfg, param):
-	cfg = removeParamIfExists(cfg, param)
-	currParams = cfg.split('_')
-	if currParams != ['']:
-		jointParams = sorted(currParams+ [param])
-		return (' --'+' --'.join(jointParams))
-	else:
-		return ' --'+param
+def joinConfigs(cfg, params):
+	for param in params.split('_'):
+		cfg = removeParamIfExists(cfg, param)
+	currParams = sorted(cfg.split('_') + params.split('_'))
+	return ('_'.join([x for x in currParams if x]))
+	
+def getCfgString(commandLine):
+	return '_'.join([x.strip('--') for x in sorted(commandLine.split())])
 
-def getCfgString(optParams):
-	return '_'.join([x.strip('--') for x in sorted(optParams.split())])
+def getCmdString(cfg):
+	return ' --'+(' --'.join(cfg.split('_')))
 
+def allTargetsCovered(costList):
+	TARGET_POINTS = [float(x)/10 for x in range(9,0,-1)]
+	sortedBD = sorted(costList.items(), key=lambda x: x[1][2]) # sort by [1][0] -- BD-BR INC, [1][1] -- TIME SAVINGS, [1][2] -- RDCCost
+	error = 0.05
+	for target in TARGET_POINTS:
+		covered = False
+		for cfg, time_bdinc_rdccost in sortedBD:
+			[bdInc, timeSavings, rdccost] = time_bdinc_rdccost
+			if ((1.0-error)*timeSavings <= target and target <= (1.0+error)*timeSavings):
+				covered = True
+
+		if not(covered): return False
+	return True
 
 #  PARAM: [BD-BR INC, TIME SAVINGS, RDCCost]
-BDRateCostList = {'': [0, 0, 0], 'SearchRange=32' : [0.033,0.000,0.014],'BipredSearchRange=2' : [0.052,0.001,0.022],'QuadtreeTUMaxDepthInter=2' : [0.098,0.003,0.031],'TestRect=0' : [0.435,0.021,0.049],'BipredSearchRange=0' : [0.069,0.005,0.066],'SearchRange=8' : [0.056,0.004,0.066],'QuadtreeTUMaxDepthInter=1' : [0.161,0.013,0.081],'AMP=0' : [0.103,0.010,0.098],'RefFrames=3' : [0.157,0.019,0.119],'HadamardME=0' : [0.088,0.013,0.151],'RefFrames=2' : [0.309,0.048,0.155],'FME=1' : [0.243,0.039,0.160],'MaxPartitionDepth=3' : [0.228,0.057,0.248],'RefFrames=1' : [0.451,0.125,0.278],'FME=0' : [0.409,0.141,0.345],'SearchRange=0' : [0.090,0.038,0.419],'RDOQ=0' : [0.074,0.032,0.427],'MaxPartitionDepth=2' : [0.559,0.246,0.440],'FME=2' : [0.188,0.152,0.809],'MaxPartitionDepth=1' : [0.770,0.650,0.845]}
+BDRateCostList = {'': [0, 0, 0], 'SearchRange=32': [0.01, 0.0327, 0.0005], 'BipredSearchRange=2': [0.02, 0.0516, 0.0011], 'QuadtreeTUMaxDepthInter=2': [0.03, 0.0980, 0.0030], 'TestRect=0.9': [0.04, 0.0502, 0.0018], 'TestRect=0.7': [0.04, 0.1339, 0.0055], 'TestRect=0.8': [0.04, 0.0939, 0.0039], 'TestRect=0.3': [0.04, 0.3139, 0.0135], 'TestRect=0.2': [0.05, 0.3527, 0.0167], 'TestRect=0.6': [0.05, 0.1788, 0.0085], 'TestRect=0.1': [0.05, 0.3952, 0.0190], 'TestRect=0': [0.05, 0.4346, 0.0213], 'TestRect=0.4': [0.05, 0.2652, 0.0133], 'TestRect=0.5': [0.06, 0.2213, 0.0123], 'BipredSearchRange=0': [0.07, 0.0689, 0.0045], 'SearchRange=8': [0.07, 0.0560, 0.0037], 'QuadtreeTUMaxDepthInter=1': [0.08, 0.1611, 0.0131], 'AMP=0': [0.10, 0.1029, 0.0100], 'RefFrames=3': [0.12, 0.1573, 0.0188], 'HadamardME=0': [0.15, 0.0882, 0.0133], 'RefFrames=2': [0.16, 0.3094, 0.0480], 'FME=1': [0.16, 0.2427, 0.0389], 'MaxPartitionDepth=3': [0.25, 0.2281, 0.0567], 'RefFrames=1': [0.28, 0.4511, 0.1253], 'FME=0': [0.35, 0.4085, 0.1410], 'SearchRange=0': [0.42, 0.0903, 0.0378], 'RDOQ=0': [0.43, 0.0740, 0.0316], 'MaxPartitionDepth=2': [0.44, 0.5594, 0.2460], 'FME=2': [0.81, 0.1878, 0.1520], 'MaxPartitionDepth=1': [0.85, 0.7695, 0.6504]}
 
-#visited = {'SearchRange=32': False, 'QuadtreeTUMaxDepthInter=2': False, 'TestRect=0': False, 'QuadtreeTUMaxDepthInter=1': False, 'AMP=0': False, 'SearchRange=8': False, 'HadamardME=0': False, 'MaxPartitionDepth=3': False, 'FME=1': False, 'RefFrames=1': False, 'RefFrames=2': False, 'MaxPartitionDepth=2': False, 'FME=0': False, 'MaxPartitionDepth=1': False, 'SearchRange=0': False, 'FME=2': False}

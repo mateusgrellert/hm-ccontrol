@@ -7,10 +7,8 @@ import os
 
 
 for gopStructure in Configuration.gopStructureList:
-	bdRateFile = makeBDRateFile(gopStructure)
 
 	for [sequence, numFrames] in Configuration.sequenceList:
-		print >> bdRateFile, sequence,
 
 		refBDResults = []
 		refTimeResults = []
@@ -36,61 +34,63 @@ for gopStructure in Configuration.gopStructureList:
 			refBDResults.append(bd)
 			refTimeResults.append(time)
 
-
-	for target in PSetBuilder.TARGET_POINTS:
-		currCfg = ''
+	currCfg = ''
+	costList = PSetBuilder.BDRateCostList
+	while not(PSetBuilder.allTargetsCovered(costList)):
 		avgTimeSavings = 0.0
 		avgBdrateIncY = 0.0
-		while avgTimeSavings < target:
-			testBDResults = []
-			testTimeResults = []
-			for [sequence, numFrames] in Configuration.sequenceList:	
 
-				timeSavings = 0.0
-				bdrateIncY = 0.0
+		testBDResults = []
+		testTimeResults = []
+		currCfg = PSetBuilder.getNextCfg(currCfg, costList)
+		if not(currCfg):
+			break
+		testName = PSetBuilder.getCfgString(currCfg)
+		
+		for [sequence, numFrames] in Configuration.sequenceList:	
+			timeSavings = 0.0
+			bdrateIncY = 0.0
+			pathToBin = Configuration.pathToRefBin
 
-				currCfg = PSetBuilder.getNextCfg(currCfg, target, timeSavings)
-				testName = PSetBuilder.getCfgName(currCfg)
-				pathToBin = Configuration.pathToRefBin
+			if Configuration.RUN_TEST:
+				if Configuration.RUN_PARALLEL:
+					Parallel(n_jobs=Configuration.NUM_THREADS)(delayed(runParallelSims)(sequence,numFrames, gopStructure, qp, pathToBin, currCfg, 'test', testName) for qp in Configuration.qpList)	
+				else:
+					for qp in Configuration.qpList:
+						runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, currCfg, 'test', testName)
 
-				if Configuration.RUN_TEST:
-					if Configuration.RUN_PARALLEL:
-						Parallel(n_jobs=Configuration.NUM_THREADS)(delayed(runParallelSims)(sequence,numFrames, gopStructure, qp, pathToBin, currCfg, 'test', testName) for qp in Configuration.qpList)	
-					else:
-						for qp in Configuration.qpList:
-							runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, currCfg, 'test', testName)
+			qpBDResults = []
+			qpTimeResults = []
+			for qp in Configuration.qpList:
+				[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, 'test', testName)
+				parsed = parseOutput(resultsPath)
+				if parsed:
+					[bd, time] = parsed
+				else:
+					[bd, time] = [['N/A'], 'N/A']
+				qpBDResults.append(bd)
+				qpTimeResults.append(time)
+			
+#			testBDResults.append(qpBDResults)
+#			testTimeResults.append(qpTimeResults)
+			testBDResults = qpBDResults
+			testTimeResults = qpTimeResults
 
-				qpBDResults = []
-				qpTimeResults = []
-				for qp in Configuration.qpList:
-					[gopPath, seqPath, resultsPath] = treatConfig(sequence, gopStructure, qp, 'test', testName)
-					parsed = parseOutput(resultsPath)
-					if parsed:
-						[bd, time] = parsed
-					else:
-						[bd, time] = [['N/A'], 'N/A']
-					qpBDResults.append(bd)
-					qpTimeResults.append(time)
-				
-				testBDResults.append(qpBDResults)
-				testTimeResults.append(qpTimeResults)
+			timeSavings = 1.0-(sum(testTimeResults)/sum(refTimeResults))
+			avgTimeSavings += timeSavings
 
-				timeSavings = 1.0-(sum(testTimeResults)/sum(refTimeResults))
-				avgTimeSavings += timeSavings
+			bdrateIncY = bdrate(refBDResults, testBDResults, 1)/100
+			bdrateIncU = bdrate(refBDResults, testBDResults, 2)/100
+			bdrateIncV = bdrate(refBDResults, testBDResults, 3)/100
+			avgBdrateIncY += bdrateIncY
 
-				bdrateIncY = bdrate(refBDResults, testBDResults, 1)/100
-				bdrateIncU = bdrate(refBDResults, testBDResults, 2)/100
-				bdrateIncV = bdrate(refBDResults, testBDResults, 3)/100
-				avgBdrateIncY += bdrateIncY
 
-				bdRates = '\t'.join(["%.2f" % (x) for x in [bdrateIncY]])
-
-			avgTimeSavings /= len(Configuration.sequenceList)
-			for i,j,k in zip(testTimeResults,testBDResults, Configuration.sequenceList):
-				print >> bdRateFile, k,		
-				calcAndPrintBDRate(refTimeResults,refBDResults,i,j, bdRateFile)
-				print >> bdRateFile, '\n',		
-
+		avgTimeSavings /= len(Configuration.sequenceList)*1.0
+		if avgTimeSavings < 0: avgTimeSavings = 0.0001
+		avgBdrateIncY /= len(Configuration.sequenceList)*1.0
+		RDCompCost = float(avgBdrateIncY/avgTimeSavings)
+		costList[testName] = [avgBdrateIncY, avgTimeSavings, RDCompCost]
+		print '%s: TS=%.2f, BD-BR=%.3f, RDCC=%.2f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
 
 	bdRateFile.close()
 	rdValuesFile.close()

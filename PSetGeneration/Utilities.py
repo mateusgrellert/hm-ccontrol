@@ -2,7 +2,7 @@ import Configuration
 import PSetBuilder
 import re
 import os
-#from joblib import Parallel, delayed  
+from joblib import Parallel, delayed  
 
 
 def treatConfig(sequence, gopStructure, qp, mode, testName = 'test'):
@@ -55,7 +55,7 @@ def runParallelSims(sequence,numFrames, gopStructure, qp, pathToBin, optParams, 
 	if numFrames:
 		optParams += ' -f ' + str(numFrames)
 
-	cmdLine = '%s -c %s -c %s -q %s %s &> %s ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
+	cmdLine = '%s -c %s -c %s -q %s %s > %s 2> /dev/null ' % (pathToBin, gopPath, seqPath, qp, optParams, resultsPath)
 	
 	os.system(cmdLine)
 

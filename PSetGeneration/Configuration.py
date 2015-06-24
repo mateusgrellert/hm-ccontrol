@@ -23,7 +23,7 @@ def buildTestSet(path):
 
 
 gopStructureList = ['encoder_lowdelay_main']
-sequenceList = [['BQSquare', 16],['BlowingBubbles', 16]] #, \
+sequenceList = [['BQSquare', 16]] #, \
 """				['Traffic', 64],['PeopleOnStreet', 64], \
 				['BasketballDrive', 64],['ParkScene', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
@@ -35,7 +35,7 @@ cfgPath = '../cfg'
 sequencePath = '/home/grellert/hm-cfgs/cropped'
 hmOutputPath = './hmOutput'
 
-pathToRefBin = '../bin/TAppEncoderStatic_Ref'
+pathToRefBin = '../bin/TAppEncoderStatic'
 optParamsRef = ''
 
 #[testNameList, pathToTestBinList, optParamsTestList] = buildTestSet('Tests.inp')
@@ -43,5 +43,5 @@ optParamsRef = ''
 #N_TESTS = len(pathToTestBinList)
 RUN_REFERENCE = True
 RUN_TEST = True
-RUN_PARALLEL = False
+RUN_PARALLEL = True
 NUM_THREADS = 4
