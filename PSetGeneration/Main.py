@@ -5,6 +5,8 @@ import Configuration
 import os
 #from joblib import Parallel, delayed  
 
+psetFileOut = open('PSET_results.csv','w')
+print >> psetFileOut, 'Params\tTime Savings\tBD-BR Inc\tRDCCOst'
 
 for gopStructure in Configuration.gopStructureList:
 
@@ -90,7 +92,8 @@ for gopStructure in Configuration.gopStructureList:
 		avgBdrateIncY /= len(Configuration.sequenceList)*1.0
 		RDCompCost = float(avgBdrateIncY/avgTimeSavings)
 		costList[testName] = [avgBdrateIncY, avgTimeSavings, RDCompCost]
-		print '%s: TS=%.2f, BD-BR=%.3f, RDCC=%.2f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
+		print >> psetFileOut, '%s\t%.2f\t%.3f\t%.2f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
+		print '%s\t%.2f\t%.3f\t%.2f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
 
 	bdRateFile.close()
 	rdValuesFile.close()
