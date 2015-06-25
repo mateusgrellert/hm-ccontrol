@@ -1,9 +1,0 @@
-nbproject/*
-build/Intermediates/*
-**/objects
-bin/*
-.svn/*
-bin_*
-./**/hm?utput
-./**/*.a
-./**/*~
