@@ -32,7 +32,7 @@ sequenceList = [['BQMall', 16]] #, \
 qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
-sequencePath = '/Users/grellert/hm-cfgs/cropped'
+sequencePath = '/home/grellert/hm-cfgs/cropped'
 hmOutputPath = './hmoutput'
 
 pathToRefBin = '../bin/TAppEncoderStatic'

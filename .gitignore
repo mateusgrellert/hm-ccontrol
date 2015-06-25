@@ -4,5 +4,6 @@ build/Intermediates/*
 bin/*
 .svn/*
 bin_*
-**/hmOutput
+**/hm?utput
 **/*.a
+**/*~

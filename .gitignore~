@@ -1,10 +1,8 @@
 nbproject/*
-bin/*yuv
 build/Intermediates/*
 **/objects
-bin/*.bin
-bin/Debug/*
-bin/Release/*
+bin/*
 .svn/*
 bin_*
-BDRateAutomatedScript/hmOutput/*
+**/hm?utput
+**/*.a
