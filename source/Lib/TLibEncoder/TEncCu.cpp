@@ -242,6 +242,7 @@ Void TEncCu::compressCtu( TComDataCU* pCtu )
 #endif
     
   xCompressCU( m_ppcBestCU[0], m_ppcTempCU[0], 0 DEBUG_STRING_PASS_INTO(sDebug) );
+ // cout << m_ppcBestCU[0]->getCUPelX() << " " << m_ppcBestCU[0]->getCUPelY()  << " " << m_ppcBestCU[0]->getTotalCost() << endl;
   DEBUG_STRING_OUTPUT(std::cout, sDebug)
 
 #if ADAPTIVE_QP_SELECTION
@@ -403,7 +404,12 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
   const UInt numberValidComponents = rpcBestCU->getPic()->getNumberValidComponents();
   std::string testRectMask;
   
+#if EN_COMPLEXITY_MANAGING
+  int test_period = (int) (TComComplexityBudgeter::testSMP);
+#else
   int test_period = (int) (m_pcEncCfg->getTestRect()*10);
+#endif
+  
   if(test_period < 10 and rpcTempCU->getPic()->getPOC() > 0){
       switch(test_period){
           case 9: testRectMask = "1111011111"; break;

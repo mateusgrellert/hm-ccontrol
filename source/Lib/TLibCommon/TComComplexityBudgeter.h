@@ -23,24 +23,29 @@ public:
 
     static long initCtuTime, endCtuTime;
     static double maxCtuTime, minCtuTime;
-    static double frameBudget,estimatedTime;
+    static double frameBudget,estFrameTime;
     static unsigned int gopSize;
     static int psetCounter[NUM_PSETS];
     
     static unsigned int picWidth;
     static unsigned int picHeight;
     static unsigned int intraPeriod;
-    static unsigned int maxCUDepth;
-    static unsigned int maxTUDepth;
-    static unsigned int maxNumRefPics;
+
     static unsigned int currPoc;
     static unsigned int budgetAlgorithm;
     static unsigned int fixPSet;
-    static int searchRange,currPSet;
+    static int currPredSavings;
+    
+    static int searchRange, bipredSR;
     static bool hadME;
-    static bool enFME;
+    static Int enFME;
     static bool testAMP;
-
+    static unsigned int testSMP;
+    static bool enRDOQ;
+    static unsigned int maxNumRefPics;
+    static unsigned int maxCUDepth;
+    static unsigned int maxTUDepth;
+    
     static ofstream budgetFile;
     
     
@@ -54,10 +59,11 @@ public:
     static UInt promote(UInt, UInt);
     static UInt demote(UInt, UInt);
     
+    static Void uniformBudget();
     static Void uniformEstimationBudget();
     static Void uniformIncrementalBudget();
     static Void bottomUpBudget();
-    static Void ICIPBudget();
+    static Void priorityBasedBudget();
     static Void setPSetToAllCTUs();
     
     static Void distributeBudget();
@@ -67,7 +73,7 @@ public:
     static Void setTimeHistory(TComDataCU *&);
     
     static Void setFrameBudget(Double);
-    static Double estimateCycleCount(UInt);
+    static Double estimateTime(UInt);
     static Void updateConfig(TComDataCU*& cu);
     static Void resetConfig(TComDataCU*& cu);
     static Void setPSetToCTU(UInt i, UInt j, UInt prof);

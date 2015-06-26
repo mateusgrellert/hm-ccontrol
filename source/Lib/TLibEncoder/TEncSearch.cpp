@@ -3181,18 +3181,14 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
       RefPicList  eRefPicList = ( iRefList ? REF_PIC_LIST_1 : REF_PIC_LIST_0 );
 
         //        for ( Int iRefIdxTemp = 0; iRefIdxTemp < pcCU->getSlice()->getNumRefIdx(eRefPicList) and iRefIdxTemp < (m_pcEncCfg->getRefFrames()/iNumPredDir); iRefIdxTemp++ )
-         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
-        //numRefs =pcCU->getSlice()->getNumRefIdx(eRefPicList);
-        if(numRefs == 0 and eRefPicList == REF_PIC_LIST_0)
-            numRefs = 1;
+#if EN_COMPLEXITY_MANAGING
+      numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), (int) TComComplexityBudgeter::maxNumRefPics);
+#else
+      numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
+#endif
+
        for ( Int iRefIdxTemp = 0; iRefIdxTemp < numRefs ; iRefIdxTemp++ )
       {
-          
-#if EN_COMPLEXITY_MANAGING
-          if (TComComplexityController::controlActive and (iRefIdxTemp == TComComplexityBudgeter::maxNumRefPics))
-              break;
-#endif
-          
         uiBitsTemp = uiMbBits[iRefList];
         if ( numRefs > 1 )
         {
@@ -3270,7 +3266,12 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
     }
 
     //  Bi-directional prediction
+    
+#if EN_COMPLEXITY_MANAGING
+      numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1), (int) TComComplexityBudgeter::maxNumRefPics);
+#else
         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1), m_pcEncCfg->getRefFrames());
+#endif
 
     if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false)  )
     {
@@ -3365,15 +3366,15 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
         Bool bChanged = false;
 
         iRefStart = 0;
-          numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
-
-        iRefEnd   = numRefs;
+         
 #if EN_COMPLEXITY_MANAGING
-        if (iRefEnd+1 < TComComplexityBudgeter::maxNumRefPics) TComComplexityBudgeter::maxNumRefPics = iRefEnd+1;
-        for ( Int iRefIdxTemp = iRefStart; iRefIdxTemp < TComComplexityBudgeter::maxNumRefPics; iRefIdxTemp++ )
+      numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), (int) TComComplexityBudgeter::maxNumRefPics);
 #else
-        for ( Int iRefIdxTemp = iRefStart; iRefIdxTemp < iRefEnd; iRefIdxTemp++ )
+      numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
 #endif
+        iRefEnd   = numRefs;
+
+        for ( Int iRefIdxTemp = iRefStart; iRefIdxTemp < iRefEnd; iRefIdxTemp++ )
         {
           uiBitsTemp = uiMbBits[2] + uiMotBits[1-iRefList];
           if ( numRefs > 1 )
@@ -3844,15 +3845,15 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
   TComMv        cMvSrchRngRB;
 
   TComYuv*      pcYuv = pcYuvOrg;
-#if EN_COMPLEXITY_MANAGING
-  if(TComComplexityController::controlActive){
-    m_iSearchRange = TComComplexityBudgeter::searchRange;
-  }
-#endif
+
   assert(eRefPicList < MAX_NUM_REF_LIST_ADAPT_SR && iRefIdxPred<Int(MAX_IDX_ADAPT_SR));
   m_iSearchRange = m_aaiAdaptSR[eRefPicList][iRefIdxPred];
 
+#if EN_COMPLEXITY_MANAGING
+  Int           iSrchRng      = ( bBi ? TComComplexityBudgeter::bipredSR : TComComplexityBudgeter::searchRange );
+#else
   Int           iSrchRng      = ( bBi ? m_bipredSearchRange : m_iSearchRange );
+#endif
   TComPattern   tmpPattern;
   TComPattern*  pcPatternKey  = &tmpPattern;
 
@@ -3921,17 +3922,17 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
   m_pcRdCost->setCostScale( 0 );
   rcMv <<= 2;
 #if EN_COMPLEXITY_MANAGING
-  if(TComComplexityBudgeter::enFME){
+  Int fme = TComComplexityBudgeter::enFME;
+#else
+  Int fme = m_pcEncCfg->getFME();
 #endif
-  if(m_pcEncCfg->getFME() == 1 or m_pcEncCfg->getFME() == 3){
+  if(fme == 1 or fme == 3){
     rcMv += (cMvHalf <<= 1);
-    if(m_pcEncCfg->getFME() >= 2){
+    if(fme >= 2){
         rcMv +=  cMvQter;
     }
   }
-#if EN_COMPLEXITY_MANAGING
-  }
-#endif
+
 
   UInt uiMvBits = m_pcRdCost->getBits( rcMv.getHor(), rcMv.getVer() );
 
@@ -4458,11 +4459,13 @@ Void TEncSearch::xPatternSearchFracDIF(
                           iRefStride );
 
 #if EN_COMPLEXITY_MANAGING
-  if(TComComplexityBudgeter::enFME){
+  Int fme = TComComplexityBudgeter::enFME;
+#else
+  Int fme = m_pcEncCfg->getFME();
 #endif
       TComMv baseRefMv(0, 0);
 
-      if(m_pcEncCfg->getFME() == 1 or m_pcEncCfg->getFME() == 3){
+      if(fme == 1 or fme == 3){
             //  Half-pel refinement
         xExtDIFUpSamplingH ( &cPatternRoi, biPred );
 
@@ -4472,7 +4475,7 @@ Void TEncSearch::xPatternSearchFracDIF(
       else
           rcMvHalf = baseRefMv;
       
-      if(m_pcEncCfg->getFME() == 2 or m_pcEncCfg->getFME() == 3){
+      if(fme == 2 or fme == 3){
          m_pcRdCost->setCostScale( 0 );
          xExtDIFUpSamplingQ ( &cPatternRoi, rcMvHalf, biPred );
          baseRefMv = rcMvHalf;
@@ -4484,9 +4487,7 @@ Void TEncSearch::xPatternSearchFracDIF(
         }
       
   
-#if EN_COMPLEXITY_MANAGING
-  }
-#endif
+
   
 }
 

@@ -1151,7 +1151,7 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
             TComComplexityBudgeter::setFrameBudget(controlOut);
             TComComplexityBudgeter::distributeBudget();
 
-            TComComplexityController::printControlStats(TComComplexityBudgeter::estimatedTime);
+            TComComplexityController::printControlStats(TComComplexityBudgeter::estFrameTime);
 
         }
     }

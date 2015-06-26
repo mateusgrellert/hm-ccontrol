@@ -45,6 +45,7 @@
 #include "TComTU.h"
 #include "Debug.h"
 #include "TLibCommon/TComComplexityManagement.h"
+#include "TComComplexityBudgeter.h"
 
 typedef struct
 {
@@ -1118,8 +1119,11 @@ Void TComTrQuant::xQuant(       TComTU       &rTu,
 #endif
 
   const Bool useTransformSkip = pcCU->getTransformSkip(uiAbsPartIdx, compID);
-
+#if EN_COMPLEXITY_MANAGING
+  Bool useRDOQ = useTransformSkip ? m_useRDOQTS : TComComplexityBudgeter::enRDOQ;
+#else
   Bool useRDOQ = useTransformSkip ? m_useRDOQTS : m_useRDOQ;
+#endif
   if ( useRDOQ && (isLuma(compID) || RDOQ_CHROMA) )
   {
 #if ADAPTIVE_QP_SELECTION
