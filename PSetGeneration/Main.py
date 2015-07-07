@@ -44,7 +44,13 @@ for gopStructure in Configuration.gopStructureList:
 
 		testBDResults = []
 		testTimeResults = []
-		currCfg = PSetBuilder.getNextCfg(currCfg, costList)
+		if PSetBuilder.psetAlgorithm == 'greedy':
+			currCfg = PSetBuilder.getNextCfgGreedy(currCfg, costList)
+		elif PSetBuilder.psetAlgorithm == 'greedy_2':
+			currCfg = PSetBuilder.getNextCfgGreedy_v2(costList)
+		else:
+			currCfg = PSetBuilder.getNextCfg(currCfg, costList)
+
 		if not(currCfg):
 			break
 		testName = PSetBuilder.getCfgString(currCfg)
@@ -77,8 +83,9 @@ for gopStructure in Configuration.gopStructureList:
 #			testTimeResults.append(qpTimeResults)
 			testBDResults = qpBDResults
 			testTimeResults = qpTimeResults
-
+			
 			timeSavings = 1.0-(sum(testTimeResults)/sum(refTimeResults))
+			#print "Test %.3f Ref %.3f TS %.3f" % (sum(testTimeResults), sum(refTimeResults), timeSavings)
 			avgTimeSavings += timeSavings
 
 			bdrateIncY = bdrate(refBDResults, testBDResults, 1)/100
@@ -91,9 +98,11 @@ for gopStructure in Configuration.gopStructureList:
 		if avgTimeSavings < 0: avgTimeSavings = 0.0001
 		avgBdrateIncY /= len(Configuration.sequenceList)*1.0
 		RDCompCost = float(avgBdrateIncY/avgTimeSavings)
-		costList[testName] = [avgBdrateIncY, avgTimeSavings, RDCompCost]
-		print >> psetFileOut, '%s\t%.2f\t%.3f\t%.2f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
+		
+		if PSetBuilder.psetAlgorithm != 'greedy':
+			costList[testName] = [avgBdrateIncY, avgTimeSavings, RDCompCost]
+			
+		print >> psetFileOut, '%s\t%.4f\t%.4f\t%.4f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
 		print '%s\t%.2f\t%.3f\t%.2f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
 
-	bdRateFile.close()
-	rdValuesFile.close()
+
