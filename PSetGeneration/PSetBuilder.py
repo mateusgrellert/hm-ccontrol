@@ -47,8 +47,29 @@ def getNextCfgGreedy_v2(costList):
 			jointCfg = joinConfigs(cfg0, cfg1)
 			if jointCfg not in costList.keys():
 				return getCmdString(jointCfg)
-			else:
-				break
+	#		else:
+	#			break
+	
+	return False
+
+def getNextCfgGreedy_v3(costList):
+	sortedBD = sorted(costList.items(), key=lambda x: x[1][0]) # sort by [1][0] -- BD-BR INC, [1][1] -- TIME SAVINGS, [1][2] -- RDCCost
+	for i in range(0,len(sortedBD)):
+		for j in range(i+1,len(sortedBD)):
+			cfg0 = sortedBD[i][0]
+			cfg1 = sortedBD[j][0]
+
+			jointCfg = joinConfigs(cfg0, cfg1)
+			if jointCfg not in costList.keys():
+				return getCmdString(jointCfg)
+			elif i+2 < len(sortedBD) and j+1 < len(sortedBD):
+				bd_inc_jp1 = sortedBD[j+1][1][0]
+				bd_inc_i = sortedBD[i][1][0]
+				bd_inc_ip1 = sortedBD[i+1][1][0]
+				bd_inc_ip2 = sortedBD[i+2][1][0]
+				if (bd_inc_i + bd_inc_jp1) > (bd_inc_ip1 + bd_inc_ip2):
+					break
+
 	
 	return False
 
@@ -108,7 +129,7 @@ def allTargetsCovered(costList):
 	return True
 
 
-psetAlgorithm = 'greedy_2'
+psetAlgorithm = 'greedy_v3'
 
 #  PARAM: [BD-BR INC, TIME SAVINGS, RDCCost]
 BDRateCostList = {'': [0, 0, 0], 'SearchRange=32': [0.01, 0.0327, 0.0005], 'BipredSearchRange=2': [0.02, 0.0516, 0.0011], 'QuadtreeTUMaxDepthInter=2': [0.03, 0.0980, 0.0030], 'TestRect=0.9': [0.04, 0.0502, 0.0018], 'TestRect=0.7': [0.04, 0.1339, 0.0055], 'TestRect=0.8': [0.04, 0.0939, 0.0039], 'TestRect=0.3': [0.04, 0.3139, 0.0135], 'TestRect=0.2': [0.05, 0.3527, 0.0167], 'TestRect=0.6': [0.05, 0.1788, 0.0085], 'TestRect=0.1': [0.05, 0.3952, 0.0190], 'TestRect=0': [0.05, 0.4346, 0.0213], 'TestRect=0.4': [0.05, 0.2652, 0.0133], 'TestRect=0.5': [0.06, 0.2213, 0.0123], 'BipredSearchRange=0': [0.07, 0.0689, 0.0045], 'SearchRange=8': [0.07, 0.0560, 0.0037], 'QuadtreeTUMaxDepthInter=1': [0.08, 0.1611, 0.0131], 'AMP=0': [0.10, 0.1029, 0.0100], 'RefFrames=3': [0.12, 0.1573, 0.0188], 'HadamardME=0': [0.15, 0.0882, 0.0133], 'RefFrames=2': [0.16, 0.3094, 0.0480], 'FME=1': [0.16, 0.2427, 0.0389], 'MaxPartitionDepth=3': [0.25, 0.2281, 0.0567], 'RefFrames=1': [0.28, 0.4511, 0.1253], 'FME=0': [0.35, 0.4085, 0.1410], 'SearchRange=0': [0.42, 0.0903, 0.0378], 'RDOQ=0': [0.43, 0.0740, 0.0316], 'MaxPartitionDepth=2': [0.44, 0.5594, 0.2460], 'FME=2': [0.81, 0.1878, 0.1520], 'MaxPartitionDepth=1': [0.85, 0.7695, 0.6504]}

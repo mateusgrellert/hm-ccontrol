@@ -7,7 +7,7 @@ import os
 
 psetFileOut = open('PSET_results.csv','w')
 print >> psetFileOut, 'Params\tTime Savings\tBD-BR Inc\tRDCCOst'
-
+psetFileOut.close()
 for gopStructure in Configuration.gopStructureList:
 
 	for [sequence, numFrames] in Configuration.sequenceList:
@@ -46,8 +46,10 @@ for gopStructure in Configuration.gopStructureList:
 		testTimeResults = []
 		if PSetBuilder.psetAlgorithm == 'greedy':
 			currCfg = PSetBuilder.getNextCfgGreedy(currCfg, costList)
-		elif PSetBuilder.psetAlgorithm == 'greedy_2':
-			currCfg = PSetBuilder.getNextCfgGreedy_v2(costList)
+		elif PSetBuilder.psetAlgorithm == 'greedy_v2':
+			crrCfg = PSetBuilder.getNextCfgGreedy_v2(costList)
+		elif PSetBuilder.psetAlgorithm == 'greedy_v3':
+			currCfg = PSetBuilder.getNextCfgGreedy_v3(costList)
 		else:
 			currCfg = PSetBuilder.getNextCfg(currCfg, costList)
 
@@ -101,8 +103,9 @@ for gopStructure in Configuration.gopStructureList:
 		
 		if PSetBuilder.psetAlgorithm != 'greedy':
 			costList[testName] = [avgBdrateIncY, avgTimeSavings, RDCompCost]
-			
+		psetFileOut = open('PSET_results.csv','a')	
 		print >> psetFileOut, '%s\t%.4f\t%.4f\t%.4f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
-		print '%s\t%.2f\t%.3f\t%.2f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
+		psetFileOut.close()
+		print '%s\t%.4f\t%.4f\t%.4f' % (testName, avgTimeSavings, avgBdrateIncY, RDCompCost)
 
 
