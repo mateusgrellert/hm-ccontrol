@@ -23,7 +23,7 @@ def buildTestSet(path):
 
 
 gopStructureList = ['encoder_lowdelay_main']
-sequenceList = [['BQMall', 16]] #, \
+sequenceList = [['BQMall', 32]] #, \
 """				['Traffic', 64],['PeopleOnStreet', 64], \
 				['BasketballDrive', 64],['ParkScene', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
@@ -33,7 +33,7 @@ qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
 sequencePath = '/home/grellert/hm-cfgs/cropped'
-hmOutputPath = './hmoutput'
+hmOutputPath = './hmoutput_bqmall_32f_blacky'
 
 pathToRefBin = '../bin/TAppEncoderStatic'
 optParamsRef = ''

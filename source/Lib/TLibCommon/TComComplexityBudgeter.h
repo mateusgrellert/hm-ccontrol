@@ -10,6 +10,7 @@
 
 #include "TComComplexityManagement.h"
 
+#define BUDGET_UPDATE_PERIOD 10
 
 using namespace std;
 
@@ -25,7 +26,7 @@ public:
     static double maxCtuTime, minCtuTime;
     static double frameBudget,estFrameTime;
     static unsigned int gopSize;
-    static int psetCounter[NUM_PSETS];
+    static int psetCounter[NUM_PSETS], budgetCount;
     
     static unsigned int picWidth;
     static unsigned int picHeight;

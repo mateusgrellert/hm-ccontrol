@@ -421,7 +421,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
           case 3: testRectMask = "1001000100"; break;
           case 2: testRectMask = "1000010000"; break;
           case 1: testRectMask = "1000000000"; break;
-          default: testRectMask ="0000000000"; break;
+          default:testRectMask = "0000000000"; break;
       }
       bTestRect = (int) (testRectMask[(rpcTempCU->getPic()->getPOC()-1)%10] - '0');
   }

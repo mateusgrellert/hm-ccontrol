@@ -6,6 +6,7 @@
 using namespace std;
 
 int TComComplexityBudgeter::psetCounter[NUM_PSETS];
+int TComComplexityBudgeter::budgetCount;
 long TComComplexityBudgeter::initCtuTime;
 long TComComplexityBudgeter::endCtuTime;
 double TComComplexityBudgeter::maxCtuTime;
@@ -68,6 +69,7 @@ Void TComComplexityBudgeter::init(UInt w, UInt h, UInt gop){
         ctuHistory.push_back(tempHistRow);
         psetMap.push_back(tempConfigRow);
     }
+    budgetCount = 0;
 }
 
 
@@ -143,11 +145,13 @@ UInt TComComplexityBudgeter::demote(UInt ctux, UInt ctuy){
 }
 
 Void TComComplexityBudgeter::uniformBudget(){ 
-    
-    int predSav = (int) ((1-(frameBudget/TComComplexityController::avgPV))*10);
-    predSav = predSav < 0 ? 0 : predSav;
-    predSav = predSav >= NUM_PSETS ? NUM_PSETS-1 : predSav;
-    currPredSavings += predSav;
+    if (budgetCount % BUDGET_UPDATE_PERIOD == 0){
+        int predSav = (int) ((1-(frameBudget/TComComplexityController::avgPV))*10);
+  //  predSav = predSav < 0 ? 0 : predSav;
+  //  predSav = predSav >= NUM_PSETS ? NUM_PSETS-1 : predSav;
+        currPredSavings += predSav;
+    }
+
     currPredSavings = currPredSavings < 0 ? 0 : currPredSavings;
     currPredSavings = currPredSavings >= NUM_PSETS ? NUM_PSETS-1 : currPredSavings;           
     
@@ -373,6 +377,8 @@ Double TComComplexityBudgeter::estimateTime(UInt predSavings){
 }
 
 Void TComComplexityBudgeter::distributeBudget(){
+
+    
     resetBudgetStats();
 
     switch(budgetAlgorithm){
@@ -383,6 +389,7 @@ Void TComComplexityBudgeter::distributeBudget(){
         case 4:  priorityBasedBudget(); break;
         default: uniformEstimationBudget(); break;
     }
+    budgetCount++;
     
     printBudgetStats();
     maxCtuTime = 0.0;
