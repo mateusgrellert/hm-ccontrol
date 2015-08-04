@@ -236,7 +236,7 @@ Void TEncCu::compressCtu( TComDataCU* pCtu )
   if(TComComplexityController::controlActive)
     TComComplexityBudgeter::updateConfig(m_ppcTempCU[0]);
   else
-    TComComplexityBudgeter::resetConfig(m_ppcTempCU[0]); 
+    TComComplexityBudgeter::resetConfig(); 
 
   TComComplexityBudgeter::initCtuTime = clock();
 #endif

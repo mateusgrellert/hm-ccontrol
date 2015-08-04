@@ -29,14 +29,14 @@ Bool TComComplexityBudgeter::testAMP;
 UInt TComComplexityBudgeter::testSMP;
 UInt TComComplexityBudgeter::currPoc;
 UInt TComComplexityBudgeter::budgetAlgorithm;
-unsigned int TComComplexityBudgeter::fixPSet; // for budget algorithm 4
+unsigned int TComComplexityBudgeter::fixPSet; // for budget algorithm 6
 Double TComComplexityBudgeter::frameBudget; 
 Double TComComplexityBudgeter::estFrameTime;
 std::ofstream TComComplexityBudgeter::budgetFile;
 
 
 Void TComComplexityBudgeter::init(UInt w, UInt h, UInt gop){
-
+    resetConfig();
     vector<double> tempHistRow;
     vector<config> tempConfigRow;
     config conf;
@@ -114,7 +114,7 @@ void TComComplexityBudgeter::updateConfig(TComDataCU*& cu){
     maxCUDepth    = psetMap[x][y][9];
 }
 
-void TComComplexityBudgeter::resetConfig(TComDataCU*& cu){
+void TComComplexityBudgeter::resetConfig(){
   
       // bipred sr, sr, testrect, tu depth, amp, had me, num refs, rdoq, cu depth, 
 
@@ -260,10 +260,11 @@ Void TComComplexityBudgeter::bottomUpBudget(){
         
 
 Void TComComplexityBudgeter::setPSetToAllCTUs() {
+    TComComplexityController::controlActive = true;
      for(int i = 0; i < ctuHistory.size(); i++){
         for(int j = 0; j < ctuHistory[0].size(); j++){
-            if (ctuHistory[i][j] == -1)
-                        continue;
+          //  if (ctuHistory[i][j] == -1)
+            //            continue;
             setPSetToCTU(i,j,fixPSet);
                        
             updateEstimationAndStats(-1,fixPSet);
@@ -387,6 +388,7 @@ Void TComComplexityBudgeter::distributeBudget(){
         case 2:  uniformIncrementalBudget(); break;
         case 3:  bottomUpBudget(); break;
         case 4:  priorityBasedBudget(); break;
+        case 5:  setPSetToAllCTUs(); break;
         default: uniformEstimationBudget(); break;
     }
     budgetCount++;

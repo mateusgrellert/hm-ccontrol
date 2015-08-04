@@ -2953,6 +2953,7 @@ Void TEncSearch::IPCMSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* pcPre
 
 Void TEncSearch::xGetInterPredictionError( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPartIdx, Distortion& ruiErr, Bool /*bHadamard*/ )
 {
+
   motionCompensation( pcCU, &m_tmpYuvPred, REF_PIC_LIST_X, iPartIdx );
 
   UInt uiAbsPartIdx = 0;
@@ -4096,7 +4097,13 @@ Void TEncSearch::xTZSearch( TComDataCU*  pcCU,
   
   TZ_SEARCH_CONFIGURATION
 
+
+#if EN_COMPLEXITY_MANAGING
+    UInt uiSearchRange = TComComplexityBudgeter::searchRange;
+#else
   UInt uiSearchRange = m_iSearchRange;
+#endif
+  
   pcCU->clipMv( rcMv );
   rcMv >>= 2;
   // init TZSearchStruct
@@ -4137,7 +4144,12 @@ Void TEncSearch::xTZSearch( TComDataCU*  pcCU,
     // reset search range
     TComMv cMvSrchRngLT;
     TComMv cMvSrchRngRB;
-    Int iSrchRng = m_iSearchRange;
+    
+#if EN_COMPLEXITY_MANAGING
+    UInt iSrchRng = TComComplexityBudgeter::searchRange;
+#else
+  UInt iSrchRng = m_iSearchRange;
+#endif
     TComMv currBestMv(cStruct.iBestX, cStruct.iBestY );
     currBestMv <<= 2;
     xSetSearchRange( pcCU, currBestMv, iSrchRng, cMvSrchRngLT, cMvSrchRngRB );
@@ -4352,8 +4364,12 @@ Void TEncSearch::xTZSearchSelective( TComDataCU*   pcCU,
     // reset search range
     TComMv cMvSrchRngLT;
     TComMv cMvSrchRngRB;
-    Int iSrchRng = m_iSearchRange;
-    TComMv currBestMv(cStruct.iBestX, cStruct.iBestY );
+#if EN_COMPLEXITY_MANAGING
+    UInt iSrchRng = TComComplexityBudgeter::searchRange;
+#else
+  UInt iSrchRng = m_iSearchRange;
+#endif    
+  TComMv currBestMv(cStruct.iBestX, cStruct.iBestY );
     currBestMv <<= 2;
     xSetSearchRange( pcCU, currBestMv, iSrchRng, cMvSrchRngLT, cMvSrchRngRB );
     iSrchRngHorLeft   = cMvSrchRngLT.getHor();
@@ -4766,7 +4782,12 @@ Void TEncSearch::xEstimateResidualQT( TComYuv    *pcResi,
   assert( pcCU->getDepth( 0 ) == pcCU->getDepth( uiAbsPartIdx ) );
   const UInt uiLog2TrSize = rTu.GetLog2LumaTrSize();
 
+#if EN_COMPLEXITY_MANAGING
+  UInt SplitFlag = ((TComComplexityBudgeter::maxTUDepth == 1) && pcCU->isInter(uiAbsPartIdx) && ( pcCU->getPartitionSize(uiAbsPartIdx) != SIZE_2Nx2N ));
+#else
   UInt SplitFlag = ((pcCU->getSlice()->getSPS()->getQuadtreeTUMaxDepthInter() == 1) && pcCU->isInter(uiAbsPartIdx) && ( pcCU->getPartitionSize(uiAbsPartIdx) != SIZE_2Nx2N ));
+#endif
+  
 #ifdef DEBUG_STRING
   const Int debugPredModeMask = DebugStringGetPredModeMask(pcCU->getPredictionMode(uiAbsPartIdx));
 #endif
@@ -4783,12 +4804,7 @@ Void TEncSearch::xEstimateResidualQT( TComYuv    *pcResi,
   }
 
   Bool bCheckSplit  = ( uiLog2TrSize >  pcCU->getQuadtreeTULog2MinSizeInCU(uiAbsPartIdx) );
-#if EN_COMPLEXITY_MANAGING
-  if(uiLog2TrSize < 5 - (TComComplexityBudgeter::maxTUDepth)){
-      bCheckSplit = false;
-      bCheckFull = true;
-  }
-#endif
+
   assert( bCheckFull || bCheckSplit );
 
   // code full block

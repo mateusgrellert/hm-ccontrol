@@ -29,14 +29,14 @@ sequenceList = [['BQSquare', 64],['BlowingBubbles', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
 				['ChinaSpeed', 64],['BasketballDrillText', 64], \
 				['Johnny', 64],  ['FourPeople',64]]
-sequenceList = [['BQSquare', 32]]
+sequenceList = [['BQSquare', 64]]
 qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
 sequencePath = '/home/grellert/hm-cfgs/cropped'
 hmOutputPath = './hmoutput'  #ESSA PASTA PRECISA EXISTIR! IDEALMENTE TUDO MINUSCULO NESSE NOME!
 
-pathToRefBin = '../bin/TAppEncoderStatic'
+pathToRefBin = '../bin/TAppEncoderStatic_original'
 optParamsRef = ''
 
 [testNameList, pathToTestBinList, optParamsTestList] = buildTestSet('Tests.inp')

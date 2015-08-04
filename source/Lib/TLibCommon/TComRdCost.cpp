@@ -398,6 +398,7 @@ Void TComRdCost::setDistParam( DistParam& rcDP, Int bitDepth, Pel* p1, Int iStri
   rcDP.iStep      = 1;
   rcDP.iSubShift  = 0;
   rcDP.bitDepth   = bitDepth;
+
   rcDP.DistFunc   = m_afpDistortFunc[ ( bHadamard ? DF_HADS : DF_SADS ) + g_aucConvertToBit[ iWidth ] + 1 ];
 }
 

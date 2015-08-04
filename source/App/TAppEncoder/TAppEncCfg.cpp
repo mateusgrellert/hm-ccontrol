@@ -640,7 +640,7 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
   Int saoOffsetBitShift[MAX_NUM_CHANNEL_TYPE];
 
 #if EN_COMPLEXITY_MANAGING
-  unsigned int budgetAlg, t_period;
+  unsigned int budgetAlg, t_period, fixPSet;
   double dkp,dki,dkd, t_savings, sp;
 #endif
   
@@ -774,13 +774,14 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
     ("RefFrames",                                             m_iRefFrames,                                        4, "NUmber of Reference Frames")
     ("FME",                                             m_iFME,                                        3, "FME cfg: 0 - off 1- Half Only 2 - Quarter Only 3 - Half+Quarter")
 #if EN_COMPLEXITY_MANAGING
-  ("BudgetAlgorithm,-balg",      budgetAlg,   0u, "Budgeting Algorithm: 0-Uniform, 1- Uniform Estimation, 2-Uniform Incremental, 3-Bottomup, 4-Priority Based")
-  ("KP",         dkp,               (double)  1.0, "KP constant of PID")
-  ("KI",         dki,               (double)  1.0, "KI constant of PID")
-  ("KD",         dkd,               (double)  1.0, "KD constant of PID")
-  ("TargetSavings",         t_savings,                (double)  1.0, "Target Savings")
-  ("TrainingPeriod",        t_period,                 0u, "PID Training Period")
-  ("SP",                    sp ,                (double)  -1, "Set Point")
+  ("BudgetAlgorithm,-balg",     budgetAlg,                  0u, "Budgeting Algorithm: 0-Uniform, 1- Uniform Estimation, 2-Uniform Incremental, 3-Bottomup, 4-Priority Based 5-FixPSET")
+  ("PSet",                        fixPSet,                  0u, "PSET for Budget Algorithm 5")
+  ("KP",                              dkp,       (double)  1.0, "KP constant of PID")
+  ("KI",                              dki,       (double)  1.0, "KI constant of PID")
+  ("KD",                              dkd,       (double)  1.0, "KD constant of PID")
+  ("TargetSavings",             t_savings,       (double)  1.0, "Target Savings")
+  ("TrainingPeriod",             t_period,                  0u, "PID Training Period")
+  ("SP",                               sp,       (double)   -1, "Set Point")
 #endif
   // Mode decision parameters
   ("LambdaModifier0,-LM0",                            m_adLambdaModifier[ 0 ],                  ( Double )1.0, "Lambda modifier for temporal layer 0")
@@ -1071,6 +1072,7 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
   TComComplexityController::targetSavings = t_savings;
   TComComplexityController::SP = sp;
   TComComplexityBudgeter::budgetAlgorithm = budgetAlg;
+  TComComplexityBudgeter::fixPSet = fixPSet;
 
 #endif
   /*

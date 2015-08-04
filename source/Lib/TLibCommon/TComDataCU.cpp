@@ -39,6 +39,8 @@
 #include "TComDataCU.h"
 #include "TComTU.h"
 #include "TComPic.h"
+#include "TComComplexityManagement.h"
+#include "TComComplexityBudgeter.h"
 
 //! \ingroup TLibCommon
 //! \{
@@ -1591,7 +1593,11 @@ UInt TComDataCU::getQuadtreeTULog2MinSizeInCU( UInt absPartIdx )
 {
   UInt log2CbSize = g_aucConvertToBit[getWidth( absPartIdx )] + 2;
   PartSize  partSize  = getPartitionSize( absPartIdx );
+#if EN_COMPLEXITY_MANAGING
+  UInt quadtreeTUMaxDepth = isIntra( absPartIdx ) ? m_pcSlice->getSPS()->getQuadtreeTUMaxDepthIntra() : TComComplexityBudgeter::maxTUDepth;
+#else
   UInt quadtreeTUMaxDepth = isIntra( absPartIdx ) ? m_pcSlice->getSPS()->getQuadtreeTUMaxDepthIntra() : m_pcSlice->getSPS()->getQuadtreeTUMaxDepthInter();
+#endif
   Int intraSplitFlag = ( isIntra( absPartIdx ) && partSize == SIZE_NxN ) ? 1 : 0;
   Int interSplitFlag = ((quadtreeTUMaxDepth == 1) && isInter( absPartIdx ) && (partSize != SIZE_2Nx2N) );
 

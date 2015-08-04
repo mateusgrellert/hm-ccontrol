@@ -76,7 +76,7 @@ public:
     static Void setFrameBudget(Double);
     static Double estimateTime(UInt);
     static Void updateConfig(TComDataCU*& cu);
-    static Void resetConfig(TComDataCU*& cu);
+    static Void resetConfig();
     static Void setPSetToCTU(UInt i, UInt j, UInt prof);
 
 };
