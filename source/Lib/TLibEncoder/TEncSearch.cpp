@@ -2851,7 +2851,16 @@ TEncSearch::estIntraPredChromaQT(TComDataCU* pcCU,
 }
 
 
+void TEncSearch::setAdaptSearchRange(int sr){
+  for (UInt iDir = 0; iDir < MAX_NUM_REF_LIST_ADAPT_SR; iDir++)
+  {
+    for (UInt iRefIdx = 0; iRefIdx < MAX_IDX_ADAPT_SR; iRefIdx++)
+    {
+      m_aaiAdaptSR[iDir][iRefIdx] = sr;
+    }
+  }
 
+}
 
 /** Function for encoding and reconstructing luma/chroma samples of a PCM mode CU.
  * \param pcCU pointer to current CU
@@ -3182,7 +3191,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
       RefPicList  eRefPicList = ( iRefList ? REF_PIC_LIST_1 : REF_PIC_LIST_0 );
 
         //        for ( Int iRefIdxTemp = 0; iRefIdxTemp < pcCU->getSlice()->getNumRefIdx(eRefPicList) and iRefIdxTemp < (m_pcEncCfg->getRefFrames()/iNumPredDir); iRefIdxTemp++ )
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
       numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), (int) TComComplexityBudgeter::maxNumRefPics);
 #else
       numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
@@ -3268,7 +3277,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 
     //  Bi-directional prediction
     
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
       numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1), (int) TComComplexityBudgeter::maxNumRefPics);
 #else
         numRefs = std::min(pcCU->getSlice()->getNumRefIdx(REF_PIC_LIST_1), m_pcEncCfg->getRefFrames());
@@ -3368,7 +3377,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* 
 
         iRefStart = 0;
          
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
       numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), (int) TComComplexityBudgeter::maxNumRefPics);
 #else
       numRefs = std::min(pcCU->getSlice()->getNumRefIdx(eRefPicList), m_pcEncCfg->getRefFrames());
@@ -3850,7 +3859,7 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
   assert(eRefPicList < MAX_NUM_REF_LIST_ADAPT_SR && iRefIdxPred<Int(MAX_IDX_ADAPT_SR));
   m_iSearchRange = m_aaiAdaptSR[eRefPicList][iRefIdxPred];
 
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   Int           iSrchRng      = ( bBi ? TComComplexityBudgeter::bipredSR : TComComplexityBudgeter::searchRange );
 #else
   Int           iSrchRng      = ( bBi ? m_bipredSearchRange : m_iSearchRange );
@@ -3922,7 +3931,7 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
 
   m_pcRdCost->setCostScale( 0 );
   rcMv <<= 2;
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   Int fme = TComComplexityBudgeter::enFME;
 #else
   Int fme = m_pcEncCfg->getFME();
@@ -3971,7 +3980,7 @@ Void TEncSearch::xPatternSearch( TComPattern* pcPatternKey, Pel* piRefY, Int iRe
   Int   iSrchRngHorRight  = pcMvSrchRngRB->getHor();
   Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();
   Int   iSrchRngVerBottom = pcMvSrchRngRB->getVer();
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   if(abs(iSrchRngHorLeft) > TComComplexityBudgeter::searchRange)
       iSrchRngHorLeft = -TComComplexityBudgeter::searchRange;
   if(iSrchRngHorRight > TComComplexityBudgeter::searchRange)
@@ -4084,7 +4093,7 @@ Void TEncSearch::xTZSearch( TComDataCU*  pcCU,
   Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();
   Int   iSrchRngVerBottom = pcMvSrchRngRB->getVer();
 
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   if(abs(iSrchRngHorLeft) > TComComplexityBudgeter::searchRange)
       iSrchRngHorLeft = -TComComplexityBudgeter::searchRange;
   if(iSrchRngHorRight > TComComplexityBudgeter::searchRange)
@@ -4098,7 +4107,7 @@ Void TEncSearch::xTZSearch( TComDataCU*  pcCU,
   TZ_SEARCH_CONFIGURATION
 
 
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
     UInt uiSearchRange = TComComplexityBudgeter::searchRange;
 #else
   UInt uiSearchRange = m_iSearchRange;
@@ -4145,7 +4154,7 @@ Void TEncSearch::xTZSearch( TComDataCU*  pcCU,
     TComMv cMvSrchRngLT;
     TComMv cMvSrchRngRB;
     
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
     UInt iSrchRng = TComComplexityBudgeter::searchRange;
 #else
   UInt iSrchRng = m_iSearchRange;
@@ -4364,7 +4373,7 @@ Void TEncSearch::xTZSearchSelective( TComDataCU*   pcCU,
     // reset search range
     TComMv cMvSrchRngLT;
     TComMv cMvSrchRngRB;
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
     UInt iSrchRng = TComComplexityBudgeter::searchRange;
 #else
   UInt iSrchRng = m_iSearchRange;
@@ -4474,7 +4483,7 @@ Void TEncSearch::xPatternSearchFracDIF(
                           pcPatternKey->getROIYHeight(),
                           iRefStride );
 
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   Int fme = TComComplexityBudgeter::enFME;
 #else
   Int fme = m_pcEncCfg->getFME();
@@ -4782,7 +4791,7 @@ Void TEncSearch::xEstimateResidualQT( TComYuv    *pcResi,
   assert( pcCU->getDepth( 0 ) == pcCU->getDepth( uiAbsPartIdx ) );
   const UInt uiLog2TrSize = rTu.GetLog2LumaTrSize();
 
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   UInt SplitFlag = ((TComComplexityBudgeter::maxTUDepth == 1) && pcCU->isInter(uiAbsPartIdx) && ( pcCU->getPartitionSize(uiAbsPartIdx) != SIZE_2Nx2N ));
 #else
   UInt SplitFlag = ((pcCU->getSlice()->getSPS()->getQuadtreeTUMaxDepthInter() == 1) && pcCU->isInter(uiAbsPartIdx) && ( pcCU->getPartitionSize(uiAbsPartIdx) != SIZE_2Nx2N ));

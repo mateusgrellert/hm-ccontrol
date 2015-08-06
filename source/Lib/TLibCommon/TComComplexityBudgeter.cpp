@@ -1,6 +1,8 @@
 #include "TComComplexityBudgeter.h"
 #include "TComComplexityController.h"
 #include "TComCABACTables.h"
+#include "TLibEncoder/TEncCfg.h"
+#include "TLibEncoder/TEncSearch.h"
 #include <cmath>
 
 using namespace std;
@@ -95,6 +97,42 @@ void TComComplexityBudgeter::setTimeHistory(TComDataCU *&pcCU){
     else if(ctu_time < minCtuTime)
         minCtuTime = ctu_time;
     
+}
+
+void TComComplexityBudgeter::updateCodingStructures(TEncCfg* encCfg, TComSPS* sps, TEncSearch* searchCfg){
+    encCfg->setUseAMP(testAMP);
+    encCfg->setTestRect(testSMP/10.0);
+    encCfg->setUseHADME(hadME);
+    encCfg->setRefFrames(maxNumRefPics);
+    encCfg->setUseRDOQ(enRDOQ);
+    encCfg->setFME(enFME);
+    
+    sps->setQuadtreeTUMaxDepthInter(maxTUDepth);
+   // sps->setQuadtreeTUMaxDepthIntra(maxTUDepth);
+    sps->setUseAMP(testAMP); 
+    for (int i = 0; i < g_uiMaxCUDepth-g_uiAddCUDepth; i++ )
+        sps->setAMPAcc(i, testAMP);
+    
+    searchCfg->setSearchRange(searchRange);
+    searchCfg->setSearchRangeBipred(bipredSR);
+    searchCfg->setAdaptSearchRange(searchRange);
+    
+    g_uiMaxCUDepth = maxCUDepth;
+    
+}
+
+void TComComplexityBudgeter::updateFrameConfig(){
+
+    bipredSR      = PSET_TABLE[fixPSet][0];
+    searchRange   = PSET_TABLE[fixPSet][1];
+    testSMP       = PSET_TABLE[fixPSet][2];
+    maxTUDepth    = PSET_TABLE[fixPSet][3];
+    testAMP       = PSET_TABLE[fixPSet][4];
+    hadME         = PSET_TABLE[fixPSet][5];
+    maxNumRefPics = PSET_TABLE[fixPSet][6];
+    enRDOQ        = PSET_TABLE[fixPSet][7];
+    enFME         = PSET_TABLE[fixPSet][8];
+    maxCUDepth    = PSET_TABLE[fixPSet][9];
 }
 
 void TComComplexityBudgeter::updateConfig(TComDataCU*& cu){
@@ -271,6 +309,7 @@ Void TComComplexityBudgeter::setPSetToAllCTUs() {
 
         }
      }
+    updateFrameConfig();
 }
 
 

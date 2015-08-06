@@ -232,7 +232,7 @@ Void TEncCu::compressCtu( TComDataCU* pCtu )
 
   // analysis of CU
   DEBUG_STRING_NEW(sDebug)
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   if(TComComplexityController::controlActive)
     TComComplexityBudgeter::updateConfig(m_ppcTempCU[0]);
   else
@@ -254,7 +254,7 @@ Void TEncCu::compressCtu( TComDataCU* pCtu )
     }
   }
 #endif
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
     TComComplexityBudgeter::endCtuTime = clock();
     TComComplexityBudgeter::setTimeHistory(pCtu);
 #endif
@@ -404,7 +404,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
   const UInt numberValidComponents = rpcBestCU->getPic()->getNumberValidComponents();
   std::string testRectMask;
   
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   int test_period = (int) (TComComplexityBudgeter::testSMP);
 #else
   int test_period = (int) (m_pcEncCfg->getTestRect()*10);
@@ -565,7 +565,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
               doNotBlockPu = rpcBestCU->getQtRootCbf( 0 ) != 0;
             }
           }
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
         if(TComComplexityBudgeter::testAMP){
 #endif
           //! Try AMP (SIZE_2NxnU, SIZE_2NxnD, SIZE_nLx2N, SIZE_nRx2N)
@@ -680,7 +680,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
 #endif
           }
          
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
         }
 #endif
         }
@@ -792,7 +792,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
     rpcTempCU->initEstData( uiDepth, iQP, bIsLosslessMode );
 
     // further split
-    #if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
      if( bSubBranch &&  uiDepth < g_uiMaxCUDepth - g_uiAddCUDepth && (uiDepth < TComComplexityBudgeter::maxCUDepth-1) )
 #else
     if( bSubBranch &&  uiDepth < g_uiMaxCUDepth - g_uiAddCUDepth )
@@ -1032,7 +1032,7 @@ Void TEncCu::xEncodeCU( TComDataCU* pcCU, UInt uiAbsPartIdx, UInt uiDepth )
     }
     return;
   }
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
     TComComplexityBudgeter::setDepthHistory(pcCU, uiAbsPartIdx);
 #endif
   if( (g_uiMaxCUWidth>>uiDepth) >= pcCU->getSlice()->getPPS()->getMinCuDQPSize() && pcCU->getSlice()->getPPS()->getUseDQP())

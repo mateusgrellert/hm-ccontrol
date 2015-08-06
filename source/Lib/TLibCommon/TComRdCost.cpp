@@ -356,7 +356,7 @@ Void TComRdCost::setDistParam( TComPattern* pcPatternKey, Pel* piRefY, Int iRefS
   // set Block Width / Height
   rcDistParam.iCols    = pcPatternKey->getROIYWidth();
   rcDistParam.iRows    = pcPatternKey->getROIYHeight();
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
     bHADME = TComComplexityBudgeter::hadME;
 #endif
   // set distortion function

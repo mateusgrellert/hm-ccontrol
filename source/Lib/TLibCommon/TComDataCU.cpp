@@ -1593,7 +1593,7 @@ UInt TComDataCU::getQuadtreeTULog2MinSizeInCU( UInt absPartIdx )
 {
   UInt log2CbSize = g_aucConvertToBit[getWidth( absPartIdx )] + 2;
   PartSize  partSize  = getPartitionSize( absPartIdx );
-#if EN_COMPLEXITY_MANAGING
+#if 0 // EN_COMPLEXITY_MANAGING
   UInt quadtreeTUMaxDepth = isIntra( absPartIdx ) ? m_pcSlice->getSPS()->getQuadtreeTUMaxDepthIntra() : TComComplexityBudgeter::maxTUDepth;
 #else
   UInt quadtreeTUMaxDepth = isIntra( absPartIdx ) ? m_pcSlice->getSPS()->getQuadtreeTUMaxDepthIntra() : m_pcSlice->getSPS()->getQuadtreeTUMaxDepthInter();

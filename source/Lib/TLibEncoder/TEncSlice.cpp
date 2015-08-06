@@ -37,6 +37,7 @@
 
 #include "TEncTop.h"
 #include "TEncSlice.h"
+#include "TLibCommon/TComComplexityBudgeter.h"
 #include <math.h>
 
 //! \ingroup TLibEncoder
@@ -718,6 +719,11 @@ Void TEncSlice::compressSlice( TComPic* pcPic )
       }
     }
   }
+  
+#if EN_COMPLEXITY_MANAGING
+  if(!pcSlice->isIntra() && TComComplexityBudgeter::budgetAlgorithm == 5)
+    TComComplexityBudgeter::updateCodingStructures(m_pcCfg, pcSlice->getSPS(), m_pcPredSearch);
+#endif
 
   // for every CTU in the slice segment (may terminate sooner if there is a byte limit on the slice-segment)
 

@@ -29,7 +29,7 @@ sequenceList = [['BQSquare', 64],['BlowingBubbles', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
 				['ChinaSpeed', 64],['BasketballDrillText', 64], \
 				['Johnny', 64],  ['FourPeople',64]]
-sequenceList = [['BQSquare', 64]]
+sequenceList = [['BQSquare', 32]]
 qpList = ['22', '27', '32', '37']
 
 cfgPath = '../cfg'
@@ -44,5 +44,5 @@ optParamsRef = ''
 N_TESTS = len(pathToTestBinList)
 RUN_REFERENCE = True
 RUN_TEST = True
-RUN_PARALLEL = True
+RUN_PARALLEL = False
 NUM_THREADS = 4

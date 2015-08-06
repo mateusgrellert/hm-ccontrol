@@ -1143,8 +1143,9 @@ Void TEncGOP::compressGOP( Int iPOCLast, Int iNumPicRcvd, TComList<TComPic*>& rc
         TComComplexityBudgeter::init(pcPic->getPicYuvOrg()->getWidth(COMPONENT_Y), pcPic->getPicYuvOrg()->getHeight(COMPONENT_Y), m_pcCfg->getGOPSize());
     
     }
-    if(TComComplexityBudgeter::budgetAlgorithm == 5) // if its FIX PSET, assign PSET regardless
+    if(TComComplexityBudgeter::budgetAlgorithm == 5){ // if its FIX PSET, assign PSET regardless
         TComComplexityBudgeter::distributeBudget();
+    }
     else if(TComComplexityController::activateControl(pcPic->getPOC())){
 
         double controlOut = TComComplexityController::calcPID();

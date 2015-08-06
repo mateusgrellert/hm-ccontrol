@@ -215,7 +215,9 @@ public:
 
   /// set ME search range
   Void setAdaptiveSearchRange   ( Int iDir, Int iRefIdx, Int iSearchRange) { assert(iDir < MAX_NUM_REF_LIST_ADAPT_SR && iRefIdx<Int(MAX_IDX_ADAPT_SR)); m_aaiAdaptSR[iDir][iRefIdx] = iSearchRange; }
-
+    void setSearchRange(int sr) { m_iSearchRange = sr; }
+    void setSearchRangeBipred(int bsr) { m_bipredSearchRange = bsr; }
+    void setAdaptSearchRange(int sr);
   Void xEncPCM    (TComDataCU* pcCU, UInt uiAbsPartIdx, Pel* piOrg, Pel* piPCM, Pel* piPred, Pel* piResi, Pel* piReco, UInt uiStride, UInt uiWidth, UInt uiHeight, const ComponentID compID );
   Void IPCMSearch (TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv* rpcPredYuv, TComYuv* rpcResiYuv, TComYuv* rpcRecoYuv );
 protected:
@@ -370,6 +372,7 @@ protected:
   // motion estimation
   // -------------------------------------------------------------------------------------------------------------------
 
+
   Void xMotionEstimation          ( TComDataCU*  pcCU,
                                     TComYuv*     pcYuvOrg,
                                     Int          iPartIdx,
@@ -466,7 +469,7 @@ protected:
 
   Void  setWpScalingDistParam( TComDataCU* pcCU, Int iRefIdx, RefPicList eRefPicListCur );
   inline  Void  setDistParamComp( ComponentID compIdx )  { m_cDistParam.compIdx = compIdx; }
-
+  
 };// END CLASS DEFINITION TEncSearch
 
 //! \}
