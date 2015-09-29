@@ -90,6 +90,13 @@ void TComComplexityController::printControlStats(double estimatedTime){
     pidFile << currPoc;
     pidFile << "\t" << controlActive << "\t" <<  SP << "\t" << PV << "\t" << gopPV/gopSize << "\t" << avgPV << "\t" << controlOutput;
     pidFile << "\t" << estimatedTime << "\t\t\t" << kp*error << "\t" << ki*accumError << "\t" <<  kd*(error - prevError) << endl;
+    
+#if DISPLAY_VERBOSE
+    cout << "@control\tPOC\tControl Active\tSP\tPV\tGOP PV\tAVG PV\tPID\tEST\t\t\te\tSe\tde\n";
+    cout << "@control\t\t" << controlActive << "\t" <<  SP << "\t" << PV << "\t" << gopPV/gopSize << "\t" << avgPV << "\t" << controlOutput;
+    cout << "\t" << estimatedTime << "\t\t\t" << kp*error << "\t" << ki*accumError << "\t" <<  kd*(error - prevError) << endl;
+#endif
+
 }
 
 

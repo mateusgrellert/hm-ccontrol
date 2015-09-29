@@ -76,7 +76,7 @@ public:
     static Void setFrameBudget(Double);
     static Double estimateTime(UInt);
     static Void updateConfig(TComDataCU*& cu);
-    static Void updateFrameConfig();
+    static Void updateFrameConfig(UInt);
     static void updateCodingStructures(TEncCfg* encCfg, TComSPS* sps, TEncSearch* searchCfg);
     static Void resetConfig();
     static Void setPSetToCTU(UInt i, UInt j, UInt prof);

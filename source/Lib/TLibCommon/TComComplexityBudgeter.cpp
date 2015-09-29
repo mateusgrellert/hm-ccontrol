@@ -117,22 +117,22 @@ void TComComplexityBudgeter::updateCodingStructures(TEncCfg* encCfg, TComSPS* sp
     searchCfg->setSearchRangeBipred(bipredSR);
     searchCfg->setAdaptSearchRange(searchRange);
     
-    g_uiMaxCUDepth = maxCUDepth;
+  //  g_uiMaxCUDepth = maxCUDepth;
     
 }
 
-void TComComplexityBudgeter::updateFrameConfig(){
+void TComComplexityBudgeter::updateFrameConfig(UInt PSet){
 
-    bipredSR      = PSET_TABLE[fixPSet][0];
-    searchRange   = PSET_TABLE[fixPSet][1];
-    testSMP       = PSET_TABLE[fixPSet][2];
-    maxTUDepth    = PSET_TABLE[fixPSet][3];
-    testAMP       = PSET_TABLE[fixPSet][4];
-    hadME         = PSET_TABLE[fixPSet][5];
-    maxNumRefPics = PSET_TABLE[fixPSet][6];
-    enRDOQ        = PSET_TABLE[fixPSet][7];
-    enFME         = PSET_TABLE[fixPSet][8];
-    maxCUDepth    = PSET_TABLE[fixPSet][9];
+    bipredSR      = PSET_TABLE[PSet][0];
+    searchRange   = PSET_TABLE[PSet][1];
+    testSMP       = PSET_TABLE[PSet][2];
+    maxTUDepth    = PSET_TABLE[PSet][3];
+    testAMP       = PSET_TABLE[PSet][4];
+    hadME         = PSET_TABLE[PSet][5];
+    maxNumRefPics = PSET_TABLE[PSet][6];
+    enRDOQ        = PSET_TABLE[PSet][7];
+    enFME         = PSET_TABLE[PSet][8];
+    maxCUDepth    = PSET_TABLE[PSet][9];
 }
 
 void TComComplexityBudgeter::updateConfig(TComDataCU*& cu){
@@ -184,7 +184,7 @@ UInt TComComplexityBudgeter::demote(UInt ctux, UInt ctuy){
 
 Void TComComplexityBudgeter::uniformBudget(){ 
     if (budgetCount % BUDGET_UPDATE_PERIOD == 0){
-        int predSav = (int) ((1-(frameBudget/TComComplexityController::avgPV))*10);
+        int predSav = (int) round((1-(frameBudget/TComComplexityController::avgPV))*10);
   //  predSav = predSav < 0 ? 0 : predSav;
   //  predSav = predSav >= NUM_PSETS ? NUM_PSETS-1 : predSav;
         currPredSavings += predSav;
@@ -192,16 +192,19 @@ Void TComComplexityBudgeter::uniformBudget(){
 
     currPredSavings = currPredSavings < 0 ? 0 : currPredSavings;
     currPredSavings = currPredSavings >= NUM_PSETS ? NUM_PSETS-1 : currPredSavings;           
-    
+          
     for(int i = 0; i < ctuHistory.size(); i++){
         for(int j = 0; j < ctuHistory[0].size(); j++){
-            if (ctuHistory[i][j] == -1)
-                continue;
+          //  if (ctuHistory[i][j] == -1)
+            //            continue;
             setPSetToCTU(i,j,currPredSavings);
+                       
             updateEstimationAndStats(-1,currPredSavings);
 
         }
-    }
+     }
+    updateFrameConfig(currPredSavings);
+
 }
 
 
@@ -232,9 +235,9 @@ Void TComComplexityBudgeter::uniformEstimationBudget(){
 
 Void TComComplexityBudgeter::uniformIncrementalBudget(){ 
    
-    if(TComComplexityController::avgPV > 1.1*frameBudget)
+    if(TComComplexityController::avgPV > ((1.0+CONTROL_ERROR)*frameBudget))
         currPredSavings++;
-    else if(TComComplexityController::avgPV < 0.90*frameBudget)
+    else if(TComComplexityController::avgPV < ((1.0-CONTROL_ERROR)*frameBudget))
         currPredSavings--;
     
     currPredSavings = (currPredSavings > NUM_PSETS-1 ) ? NUM_PSETS-1 : currPredSavings;
@@ -309,7 +312,7 @@ Void TComComplexityBudgeter::setPSetToAllCTUs() {
 
         }
      }
-    updateFrameConfig();
+    updateFrameConfig(fixPSet);
 }
 
 
@@ -447,7 +450,7 @@ Void TComComplexityBudgeter::printBudgetStats(){
     
     if(!budgetFile.is_open()){
         budgetFile.open("budgetDistribution.csv",ofstream::out);
-        int inc = 100/NUM_PSETS;
+        int inc = 110/NUM_PSETS;
         int num = 0;
         for (int i = 0; i < NUM_PSETS; i++){
             budgetFile << "PS" << num << "\t";
@@ -463,10 +466,30 @@ Void TComComplexityBudgeter::printBudgetStats(){
         total += psetCounter[i];
     }
     
-    for (int i = 0; i < NUM_PSETS; i++)
+#if DISPLAY_VERBOSE
+    cout << "@budget\t";
+    int inc = 100/NUM_PSETS;
+    int num = 0;
+    for (int i = 0; i < NUM_PSETS; i++){
+        cout << "PS" << num << "\t";
+            num += inc;
+    }
+    cout << endl << "@budget\t";
+#endif
+    
+    for (int i = 0; i < NUM_PSETS; i++){
         budgetFile << (Double) psetCounter[i]/total << "\t";
+#if DISPLAY_VERBOSE
+        cout << (Double) psetCounter[i]/total << "\t";
+#endif
+    }
 
     budgetFile << endl;
+    
+#if DISPLAY_VERBOSE
+    cout << endl;
+#endif
+    
 }
 
 Void TComComplexityBudgeter::setFrameBudget(Double budget){

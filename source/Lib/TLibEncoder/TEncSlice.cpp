@@ -38,6 +38,7 @@
 #include "TEncTop.h"
 #include "TEncSlice.h"
 #include "TLibCommon/TComComplexityBudgeter.h"
+#include "TLibCommon/TComComplexityController.h"
 #include <math.h>
 
 //! \ingroup TLibEncoder
@@ -721,7 +722,7 @@ Void TEncSlice::compressSlice( TComPic* pcPic )
   }
   
 #if EN_COMPLEXITY_MANAGING
-  if(!pcSlice->isIntra() && TComComplexityBudgeter::budgetAlgorithm == 5)
+  if((!pcSlice->isIntra() && TComComplexityBudgeter::budgetAlgorithm == 5) or (TComComplexityController::controlActive))
     TComComplexityBudgeter::updateCodingStructures(m_pcCfg, pcSlice->getSPS(), m_pcPredSearch);
 #endif
 

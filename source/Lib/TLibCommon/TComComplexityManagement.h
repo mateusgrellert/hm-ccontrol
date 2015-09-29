@@ -11,7 +11,9 @@
 
 #define EN_COMPLEXITY_MANAGING 1
 #define NUM_RD_FRAMES 5
+#define DISPLAY_VERBOSE 1
 
+#define CONTROL_ERROR 0.05  // 5% error
 
 #define NUM_PARAMS 10 
 #define NUM_PSETS 10
@@ -25,6 +27,7 @@
 #define PS70 7
 #define PS80 8
 #define PS90 9
+#define PS100 10
 // bipred sr, sr, testrect, tu depth, amp, had me, num refs, rdoq, fme, cu depth, 
 const int PSET_TABLE[NUM_PSETS][NUM_PARAMS] = {
   // BI | SR | RCT | TU | AMP | HAD | RFS | RDQ | FME | CUD
@@ -39,6 +42,7 @@ const int PSET_TABLE[NUM_PSETS][NUM_PARAMS] = {
     {0,   32,   0,   2,   0,    1,    3,    1,     3,    4},  //70%
     {0,   32,   0,   1,   0,    0,    3,    0,     3,    4},  //80%
     {2,    8,   0,   1,   0,    0,    2,    0,     1,    3},  //90%
+    //{2,    1,   0,   1,   0,    0,    1,    0,     1,    3},  //100%
 };
 
 #include <fstream>

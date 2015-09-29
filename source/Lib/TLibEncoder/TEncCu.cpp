@@ -412,6 +412,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
   
   if(test_period < 10 and rpcTempCU->getPic()->getPOC() > 0){
       switch(test_period){
+#if BUDGET_UPDATE_PERIOD == 10
           case 9: testRectMask = "1111011111"; break;
           case 8: testRectMask = "1111011110"; break;
           case 7: testRectMask = "1101110110"; break;
@@ -422,8 +423,20 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
           case 2: testRectMask = "1000010000"; break;
           case 1: testRectMask = "1000000000"; break;
           default:testRectMask = "0000000000"; break;
+#else
+          case 9: testRectMask = "11110111"; break;
+          case 8: testRectMask = "11101110"; break;
+          case 7: testRectMask = "11011011"; break;
+          case 6: testRectMask = "11010110"; break;
+          case 5: testRectMask = "10011001"; break;
+          case 4: testRectMask = "10010010"; break;
+          case 3: testRectMask = "10001000"; break;
+          case 2: testRectMask = "10001000"; break;
+          case 1: testRectMask = "10000000"; break;
+          default:testRectMask = "00000000"; break;
+#endif
       }
-      bTestRect = (int) (testRectMask[(rpcTempCU->getPic()->getPOC()-1)%10] - '0');
+      bTestRect = (int) (testRectMask[(rpcTempCU->getPic()->getPOC()-1)%BUDGET_UPDATE_PERIOD] - '0');
   }
   else{
       bTestRect = true;
@@ -792,8 +805,8 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
     rpcTempCU->initEstData( uiDepth, iQP, bIsLosslessMode );
 
     // further split
-#if 0 // EN_COMPLEXITY_MANAGING
-     if( bSubBranch &&  uiDepth < g_uiMaxCUDepth - g_uiAddCUDepth && (uiDepth < TComComplexityBudgeter::maxCUDepth-1) )
+#if EN_COMPLEXITY_MANAGING
+     if( (not(TComComplexityController::controlActive) && bSubBranch &&  (uiDepth < g_uiMaxCUDepth - g_uiAddCUDepth)) or (TComComplexityController::controlActive && bSubBranch &&  (uiDepth < g_uiMaxCUDepth - g_uiAddCUDepth)  && (uiDepth < TComComplexityBudgeter::maxCUDepth-1) ))
 #else
     if( bSubBranch &&  uiDepth < g_uiMaxCUDepth - g_uiAddCUDepth )
 #endif
