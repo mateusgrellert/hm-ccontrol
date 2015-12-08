@@ -195,7 +195,7 @@ protected:
 
   // coding tools (encoder-only parameters)
     Int       m_iFME;
-    Double       m_dTestRect;
+    Int       m_iTestRect;
     Int       m_iRefFrames;
   Bool      m_bUseASR;                                        ///< flag for using adaptive motion search range
   Bool      m_bUseHADME;                                      ///< flag for using HAD in sub-pel ME

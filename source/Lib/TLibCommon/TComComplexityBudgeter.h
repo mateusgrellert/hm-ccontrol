@@ -10,7 +10,7 @@
 
 #include "TComComplexityManagement.h"
 
-#define BUDGET_UPDATE_PERIOD 10
+#define TEST_RECT_GOP 8
 
 using namespace std;
 
@@ -66,7 +66,6 @@ public:
     static Void bottomUpBudget();
     static Void priorityBasedBudget();
     static Void setPSetToAllCTUs();
-    
     static Void distributeBudget();
     static void updateEstimationAndStats(Int old, UInt neww);
 

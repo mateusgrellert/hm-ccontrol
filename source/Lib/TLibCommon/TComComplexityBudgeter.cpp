@@ -101,7 +101,7 @@ void TComComplexityBudgeter::setTimeHistory(TComDataCU *&pcCU){
 
 void TComComplexityBudgeter::updateCodingStructures(TEncCfg* encCfg, TComSPS* sps, TEncSearch* searchCfg){
     encCfg->setUseAMP(testAMP);
-    encCfg->setTestRect(testSMP/10.0);
+    encCfg->setTestRect(testSMP);
     encCfg->setUseHADME(hadME);
     encCfg->setRefFrames(maxNumRefPics);
     encCfg->setUseRDOQ(enRDOQ);
@@ -158,7 +158,7 @@ void TComComplexityBudgeter::resetConfig(){
 
     bipredSR      = 4;
     searchRange   = 64;
-    testSMP       = 10;
+    testSMP       = TEST_RECT_GOP;
     maxTUDepth    = 3;
     testAMP       = 1;
     hadME         = 1;
@@ -183,7 +183,7 @@ UInt TComComplexityBudgeter::demote(UInt ctux, UInt ctuy){
 }
 
 Void TComComplexityBudgeter::uniformBudget(){ 
-    if (budgetCount % BUDGET_UPDATE_PERIOD == 0){
+    if (budgetCount % TEST_RECT_GOP == 0){
         int predSav = (int) round((1-(frameBudget/TComComplexityController::avgPV))*10);
   //  predSav = predSav < 0 ? 0 : predSav;
   //  predSav = predSav >= NUM_PSETS ? NUM_PSETS-1 : predSav;
@@ -299,6 +299,7 @@ Void TComComplexityBudgeter::bottomUpBudget(){
 
 
         
+
 
 Void TComComplexityBudgeter::setPSetToAllCTUs() {
     TComComplexityController::controlActive = true;

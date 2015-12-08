@@ -52,7 +52,7 @@ const int PSET_TABLE[NUM_PSETS][NUM_PARAMS] = {
 #include "TComSlice.h"
 #include "TLibEncoder/TEncSearch.h"
 #include "TypeDef.h"
-
+#include <string>
 
 #endif	/* TCOMCOMPLEXITYMANAGEMENT_H */
 

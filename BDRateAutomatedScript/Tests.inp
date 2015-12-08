@@ -1,15 +1,10 @@
 #    FORMAT:  TEST_NAME PATH_TO_ REF TEST PARAMS (SEPARATED BY SPACES)
-#DYN-PS0 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=0
-DYN-PS10 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=1
-DYN-PS20 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=2
-DYN-PS30 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=3
-DYN-PS40 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=4
-DYN-PS50 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=5
-DYN-PS60 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=6
-DYN-PS70 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=7
-DYN-PS80 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=8
-DYN-PS90 ../bin/TAppEncoderStatic --BudgetAlgorithm=5 --PSet=9
+TR-0/8 ../bin/TAppEncoderStatic_original --SearchRange=96
+TR-1/8 ../bin/TAppEncoderStatic_original --SearchRange=96
+TR-2/8 ../bin/TAppEncoderStatic_original --SearchRange=96
+TR-3/8 ../bin/TAppEncoderStatic_original --SearchRange=96
+TR-4/8 ../bin/TAppEncoderStatic_original --SearchRange=96
+TR-5/8 ../bin/TAppEncoderStatic_original --BipredSearchRange=8
+TR-6/8 ../bin/TAppEncoderStatic_original --BipredSearchRange=16
+TR-7/8 ../bin/TAppEncoderStatic_original --BipredSearchRange=32
 
-#STA-PS10 ../bin/TAppEncoderStatic_original --BipredSearchRange=2 --QuadtreeTUMaxDepthInter=2
-#STA-PS20 ../bin/TAppEncoderStatic_original --BipredSearchRange=0 --QuadtreeTUMaxDepthInter=2 --SearchRange=32 --TestRect=0.9
-#STA-PS30 ../bin/TAppEncoderStatic_original --BipredSearchRange=2 --QuadtreeTUMaxDepthInter=2 --SearchRange=8 --TestRect=0.7

@@ -31,7 +31,7 @@ sequenceList = [['BQSquare', 64],['BlowingBubbles', 64], \
 				['RaceHorsesC', 64],['BQMall', 64], \
 				['ChinaSpeed', 64],['BasketballDrillText', 64], \
 				['Johnny', 64],  ['FourPeople',64]]
-sequenceList = [['BQMall', 320]]
+sequenceList = [['BQMall', 20]]
 qpList = ['22', '27', '32', '37']
 
 targetComplexityList = xrange(10,100,10)
