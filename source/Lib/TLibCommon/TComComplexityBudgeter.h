@@ -10,7 +10,6 @@
 
 #include "TComComplexityManagement.h"
 
-#define TEST_RECT_GOP 8
 
 using namespace std;
 

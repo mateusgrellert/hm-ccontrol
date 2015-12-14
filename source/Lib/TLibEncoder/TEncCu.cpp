@@ -410,6 +410,7 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
   int test_period = (int) (m_pcEncCfg->getTestRect());
 #endif
   
+#if TILE_LEVEL_TEST_RECT
   if(test_period < TEST_RECT_GOP and rpcTempCU->getPic()->getPOC() > 0){
     switch(test_period){
 #if TEST_RECT_GOP == 10
@@ -433,12 +434,31 @@ Void TEncCu::xCompressCU( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt u
           case 1: testRectMask = "00010000"; break;
           default:testRectMask = "00000000"; break;
 #endif
-      }
+                }
       bTestRect = (int) (testRectMask[(rpcTempCU->getPic()->getPOC()-1)%TEST_RECT_GOP] - '0');
   }
   else{
       bTestRect = true;
   }
+          
+#else
+  if(test_period > 1 and rpcTempCU->getPic()->getPOC() > 0){
+      if( rpcTempCU->getCUPelX() % g_uiMaxCUWidth == 0 and rpcTempCU->getCUPelY() % g_uiMaxCUHeight == 0){
+        int cu_x = rpcTempCU->getCUPelX() / g_uiMaxCUWidth;
+        int cu_y = rpcTempCU->getCUPelY() / g_uiMaxCUHeight;
+
+        if(test_period == 2)
+            bTestRect = not((cu_x + cu_y) % 2);
+        else
+            bTestRect = ((cu_x % ((int) sqrt(test_period)) == 0) and (cu_y % ((int) sqrt(test_period)) == 0));
+      }
+      else
+          bTestRect = false;
+  }
+  else
+      bTestRect = true;
+#endif
+
 
   if( (g_uiMaxCUWidth>>uiDepth) >= rpcTempCU->getSlice()->getPPS()->getMinCuDQPSize() )
   {

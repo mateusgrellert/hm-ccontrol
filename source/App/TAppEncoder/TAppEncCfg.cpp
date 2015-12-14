@@ -770,7 +770,11 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
   ("HadamardME",                                      m_bUseHADME,                                       true, "Hadamard ME for fractional-pel")
   ("ASR",                                             m_bUseASR,                                        false, "Adaptive motion search range")
     // NEW PARAMETERS
+#if TILE_LEVEL_TEST_RECT
     ("TestRect",                                             m_iTestRect,                              8, "Rectanguler SMP enabler")
+#else  // CTU LEVEL
+      ("TestRect",                                             m_iTestRect,                              1, "Rectanguler SMP enabler")
+#endif
     ("RefFrames",                                             m_iRefFrames,                                        4, "NUmber of Reference Frames")
     ("FME",                                             m_iFME,                                        3, "FME cfg: 0 - off 1- Half Only 2 - Quarter Only 3 - Half+Quarter")
 #if EN_COMPLEXITY_MANAGING
@@ -2313,7 +2317,11 @@ Void TAppEncCfg::xPrintParameter()
   printf("QP                                : %5.2f\n", m_fQP );
   printf("Max dQP signaling depth           : %d\n", m_iMaxCuDQPDepth);
     printf("FME                               : %d\n", m_iFME);
+#if TILE_LEVEL_TEST_RECT
     printf("Test Rectangular SMPS             : %d each %d frames\n", m_iTestRect, TEST_RECT_GOP);
+#else
+    printf("Test Rectangular SMPS             : 1 in each group of %d CTUs\n", m_iTestRect);
+#endif
     printf("Number Reference Frames           : %d\n", m_iRefFrames);
 #if EN_COMPLEXITY_MANAGING
   printf("Budgeting Algorithm                : %d\n", TComComplexityBudgeter::budgetAlgorithm);

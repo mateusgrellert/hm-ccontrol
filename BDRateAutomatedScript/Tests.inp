@@ -1,10 +1,10 @@
 #    FORMAT:  TEST_NAME PATH_TO_ REF TEST PARAMS (SEPARATED BY SPACES)
-TR-0/8 ../bin/TAppEncoderStatic_original --SearchRange=96
-TR-1/8 ../bin/TAppEncoderStatic_original --SearchRange=96
-TR-2/8 ../bin/TAppEncoderStatic_original --SearchRange=96
-TR-3/8 ../bin/TAppEncoderStatic_original --SearchRange=96
-TR-4/8 ../bin/TAppEncoderStatic_original --SearchRange=96
-TR-5/8 ../bin/TAppEncoderStatic_original --BipredSearchRange=8
-TR-6/8 ../bin/TAppEncoderStatic_original --BipredSearchRange=16
-TR-7/8 ../bin/TAppEncoderStatic_original --BipredSearchRange=32
+TR-1_2 ../bin/TAppEncoderStatic_original --TestRect=2
+TR-1_4 ../bin/TAppEncoderStatic_original --TestRect=4
+TR-1_9 ../bin/TAppEncoderStatic_original --TestRect=9
+TR-1_16 ../bin/TAppEncoderStatic_original --TestRect=16
+TR-1_25 ../bin/TAppEncoderStatic_original --TestRect=25
+TR-1_36 ../bin/TAppEncoderStatic_original --TestRect=36
+TR-1_49 ../bin/TAppEncoderStatic_original --TestRect=49
+TR-1_64 ../bin/TAppEncoderStatic_original --TestRect=64
 
